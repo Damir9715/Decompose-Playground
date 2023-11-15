@@ -4,6 +4,7 @@ import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.childStack
+import com.arkivanov.decompose.router.stack.navigate
 import com.arkivanov.decompose.router.stack.pop
 import com.arkivanov.decompose.router.stack.push
 import com.arkivanov.decompose.value.Value
@@ -67,6 +68,13 @@ class ListingComponentImpl(
     }
 
     override fun onFilterApplied(sqb: Int) {
+        navigation.navigate { stack ->
+            stack
+                    //удаляем все выдачи кроме первой
+                    .filterNot { it is Config.AdvertList && it.sqb != 0 }
+                    //удаляем все фильтры кроме последней
+                    .filterNot { it is Config.Filter && it.sqb != sqb - 1 }
+        }
         navigation.push(Config.AdvertList(sqb))
     }
 
