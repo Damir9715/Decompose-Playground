@@ -12,7 +12,6 @@ import com.arkivanov.decompose.extensions.compose.jetpack.stack.animation.fade
 import com.arkivanov.decompose.extensions.compose.jetpack.stack.animation.stackAnimation
 import com.arkivanov.decompose.extensions.compose.jetpack.subscribeAsState
 import com.example.decomposeplayground.presentaion.component.bottomnavigation.BottomNavigationContent
-import com.example.decomposeplayground.presentaion.component.postadvert.PostAdvertContent
 
 
 @Composable
@@ -31,10 +30,6 @@ fun RootContent(
     ) {
         when (val child = it.instance) {
             is RootComponent.Child.MainTabsChild -> BottomNavigationContent(
-                    component = child.component,
-                    modifier = Modifier.fillMaxSize()
-            )
-            is RootComponent.Child.PostAdvertChild -> PostAdvertContent(
                     component = child.component,
                     modifier = Modifier.fillMaxSize()
             )

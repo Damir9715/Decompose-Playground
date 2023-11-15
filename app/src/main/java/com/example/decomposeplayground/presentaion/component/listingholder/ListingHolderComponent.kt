@@ -85,10 +85,10 @@ class ListingHolderComponentImpl(
                         component = AdvertListComponentImpl(
                                 componentContext = componentContext,
                                 database = database,
+                                sqb = config.sqb,
                                 onAdvertClicked = ::onAdvertClicked,
                                 onFilterClicked = ::onFilterClicked,
                                 showBottomNavigation = showBottomNavigation,
-                                sqb = config.sqb,
                         )
                 )
                 is Config.AdvertDetails -> ListingHolderComponent.Child.AdvertDetails(

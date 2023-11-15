@@ -4,7 +4,6 @@ import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.childStack
-import com.arkivanov.decompose.router.stack.push
 import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.decompose.value.update
@@ -13,8 +12,6 @@ import com.arkivanov.essenty.parcelable.Parcelable
 import com.example.decomposeplayground.presentaion.MainActivity
 import com.example.decomposeplayground.presentaion.component.bottomnavigation.BottomNavigationComponent
 import com.example.decomposeplayground.presentaion.component.bottomnavigation.BottomNavigationComponentImpl
-import com.example.decomposeplayground.presentaion.component.postadvert.PostAdvertComponent
-import com.example.decomposeplayground.presentaion.component.postadvert.PostAdvertComponentImpl
 import kotlinx.parcelize.Parcelize
 
 private const val EXIT_APPLICATION_TIMEOUT = 2000
@@ -25,8 +22,6 @@ interface RootComponent {
 
     val childStack: Value<ChildStack<*, Child>>
 
-    fun onPostAdvertTabClicked()
-
     fun onToastShown()
 
     data class State(val toast: String? = null)
@@ -34,7 +29,6 @@ interface RootComponent {
     sealed interface Child {
 
         data class MainTabsChild(val component: BottomNavigationComponent) : Child
-        data class PostAdvertChild(val component: PostAdvertComponent) : Child
     }
 }
 
@@ -63,12 +57,6 @@ class RootComponentImpl(
                 is Config.MainTabs -> RootComponent.Child.MainTabsChild(
                         component = BottomNavigationComponentImpl(
                                 componentContext = componentContext,
-                                onPostAdvertTabClicked = ::onPostAdvertTabClicked,
-                        )
-                )
-                is Config.PostAdvert -> RootComponent.Child.PostAdvertChild(
-                        component = PostAdvertComponentImpl(
-                                componentContext = componentContext
                         )
                 )
             }
@@ -89,10 +77,6 @@ class RootComponentImpl(
         backHandler.register(backCallback)
     }
 
-    override fun onPostAdvertTabClicked() {
-        navigation.push(Config.PostAdvert)
-    }
-
     override fun onToastShown() {
         _state.update { _state.value.copy(toast = null) }
     }
@@ -101,8 +85,5 @@ class RootComponentImpl(
 
         @Parcelize
         data object MainTabs : Config
-
-        @Parcelize
-        data object PostAdvert : Config
     }
 }

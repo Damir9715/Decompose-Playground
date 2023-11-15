@@ -17,6 +17,8 @@ import com.example.decomposeplayground.presentaion.component.listingholder.Listi
 import com.example.decomposeplayground.presentaion.component.listingholder.ListingHolderComponentImpl
 import com.example.decomposeplayground.presentaion.component.messages.MessagesComponent
 import com.example.decomposeplayground.presentaion.component.messages.MessagesComponentImpl
+import com.example.decomposeplayground.presentaion.component.postadvert.PostAdvertComponent
+import com.example.decomposeplayground.presentaion.component.postadvert.PostAdvertComponentImpl
 import kotlinx.parcelize.Parcelize
 
 interface BottomNavigationComponent {
@@ -40,6 +42,7 @@ interface BottomNavigationComponent {
 
         data class AdvertListChild(val component: ListingHolderComponent) : Child
         data class FavoritesChild(val component: FavoritesComponent) : Child
+        data class PostAdvertChild(val component: PostAdvertComponent) : Child
         data class MessagesChild(val component: MessagesComponent) : Child
         data class CabinetChild(val component: CabinetHolderComponent) : Child
     }
@@ -47,10 +50,9 @@ interface BottomNavigationComponent {
 
 class BottomNavigationComponentImpl(
         componentContext: ComponentContext,
-        private val onPostAdvertTabClicked: () -> Unit,
 ) : BottomNavigationComponent, ComponentContext by componentContext {
 
-    private var _state = MutableValue(BottomNavigationComponent.State(false))
+    private var _state = MutableValue(BottomNavigationComponent.State(true))
 
     override val state: Value<BottomNavigationComponent.State> = _state
 
@@ -75,17 +77,24 @@ class BottomNavigationComponentImpl(
                 )
                 is Config.Favorites -> BottomNavigationComponent.Child.FavoritesChild(
                         component = FavoritesComponentImpl(
-                                componentContext = componentContext
+                                componentContext = componentContext,
+                        )
+                )
+                is Config.PostAdvert -> BottomNavigationComponent.Child.PostAdvertChild(
+                        component = PostAdvertComponentImpl(
+                                componentContext = componentContext,
+                                showBottomNavigation = ::showBottomNavigation,
+                                hideBottomNavigation = ::hideBottomNavigation,
                         )
                 )
                 is Config.Cabinet -> BottomNavigationComponent.Child.CabinetChild(
                         component = CabinetHolderComponentImpl(
-                                componentContext = componentContext
+                                componentContext = componentContext,
                         )
                 )
                 is Config.Messages -> BottomNavigationComponent.Child.MessagesChild(
                         component = MessagesComponentImpl(
-                                componentContext = componentContext
+                                componentContext = componentContext,
                         )
                 )
             }
@@ -99,7 +108,7 @@ class BottomNavigationComponentImpl(
     }
 
     override fun onPostAdvertTabClicked() {
-        onPostAdvertTabClicked.invoke()
+        navigation.bringToFront(Config.PostAdvert)
     }
 
     override fun onMessagesTabClicked() {
@@ -125,6 +134,9 @@ class BottomNavigationComponentImpl(
 
         @Parcelize
         data object Favorites : Config
+
+        @Parcelize
+        data object PostAdvert : Config
 
         @Parcelize
         data object Messages : Config

@@ -23,6 +23,7 @@ import com.example.decomposeplayground.presentaion.component.cabinetholder.Cabin
 import com.example.decomposeplayground.presentaion.component.favorites.FavoritesContent
 import com.example.decomposeplayground.presentaion.component.listingholder.ListingHolderContent
 import com.example.decomposeplayground.presentaion.component.messages.MessagesContent
+import com.example.decomposeplayground.presentaion.component.postadvert.PostAdvertContent
 
 @Composable
 fun BottomNavigationContent(
@@ -45,6 +46,10 @@ fun BottomNavigationContent(
                         modifier = Modifier.fillMaxSize()
                 )
                 is BottomNavigationComponent.Child.FavoritesChild -> FavoritesContent(
+                        component = child.component,
+                        modifier = Modifier.fillMaxSize()
+                )
+                is BottomNavigationComponent.Child.PostAdvertChild -> PostAdvertContent(
                         component = child.component,
                         modifier = Modifier.fillMaxSize()
                 )

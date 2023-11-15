@@ -30,7 +30,7 @@ class FilterComponentImpl(
     init {
         lifecycle.subscribe(object : Lifecycle.Callbacks {
             override fun onStart() {
-                super.onCreate()
+                super.onStart()
                 hideBottomNavigation.invoke()
             }
         })
