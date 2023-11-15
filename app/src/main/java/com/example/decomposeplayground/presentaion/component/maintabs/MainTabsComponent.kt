@@ -7,6 +7,7 @@ import com.arkivanov.decompose.router.stack.bringToFront
 import com.arkivanov.decompose.router.stack.childStack
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.essenty.parcelable.Parcelable
+import com.example.decomposeplayground.data.database.AdvertsDatabase
 import com.example.decomposeplayground.presentaion.component.cabinet.CabinetComponent
 import com.example.decomposeplayground.presentaion.component.cabinet.CabinetComponentImpl
 import com.example.decomposeplayground.presentaion.component.favorites.FavoritesComponent
@@ -38,7 +39,9 @@ interface MainTabsComponent {
 
 class MainTabsComponentImpl(
         componentContext: ComponentContext,
+        private val database: AdvertsDatabase,
         private val onPostAdvertTabClicked: () -> Unit,
+        private val onAdvertClicked: (Long) -> Unit,
 ) : MainTabsComponent, ComponentContext by componentContext {
 
     private val navigation = StackNavigation<Config>()
@@ -56,6 +59,8 @@ class MainTabsComponentImpl(
                 is Config.AdvertList -> MainTabsComponent.Child.AdvertListChild(
                         component = ListingComponentImpl(
                                 componentContext = componentContext,
+                                database = database,
+                                onAdvertClicked = onAdvertClicked,
                         )
                 )
                 is Config.Favorites -> MainTabsComponent.Child.FavoritesChild(

@@ -9,7 +9,6 @@ import com.arkivanov.decompose.extensions.compose.jetpack.stack.Children
 import com.arkivanov.decompose.extensions.compose.jetpack.stack.animation.fade
 import com.arkivanov.decompose.extensions.compose.jetpack.stack.animation.stackAnimation
 import com.arkivanov.decompose.extensions.compose.jetpack.subscribeAsState
-import com.example.decomposeplayground.presentaion.component.advertdetails.AdvertDetailsContent
 import com.example.decomposeplayground.presentaion.component.advertlist.AdvertListContent
 
 @Composable
@@ -27,10 +26,6 @@ fun ListingContent(
         ) {
             when (val child = it.instance) {
                 is ListingComponent.Child.AdvertList -> AdvertListContent(
-                        component = child.component,
-                        modifier = Modifier.fillMaxSize()
-                )
-                is ListingComponent.Child.AdvertDetails -> AdvertDetailsContent(
                         component = child.component,
                         modifier = Modifier.fillMaxSize()
                 )
