@@ -42,7 +42,7 @@ fun AdvertListContent(
                 verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(
-                    text = "AdvertList",
+                    text = "AdvertList - sqb: ${state.sqb}",
                     fontSize = 24.sp,
                     modifier = Modifier.padding(start = 16.dp)
             )

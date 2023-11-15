@@ -17,6 +17,7 @@ interface AdvertListComponent {
     data class State(
             val adverts: List<Advert>,
             val selectedAdvertId: Long?,
+            val sqb: Int?,
     )
 
     data class Advert(
@@ -28,8 +29,9 @@ interface AdvertListComponent {
 class AdvertListComponentImpl(
         componentContext: ComponentContext,
         database: AdvertsDatabase,
+        private val sqb: Int,
         private val onAdvertClicked: (Long) -> Unit,
-        private val onFilterClicked: () -> Unit,
+        private val onFilterClicked: (Int) -> Unit,
         private val showBottomNavigation: () -> Unit,
 ) : AdvertListComponent, ComponentContext by componentContext {
 
@@ -39,6 +41,7 @@ class AdvertListComponentImpl(
                         AdvertListComponent.Advert(it.id, it.title)
                     },
                     selectedAdvertId = null,
+                    sqb = sqb,
             )
     )
 
@@ -58,6 +61,6 @@ class AdvertListComponentImpl(
     }
 
     override fun onFilterClicked() {
-        onFilterClicked.invoke()
+        onFilterClicked.invoke(sqb)
     }
 }

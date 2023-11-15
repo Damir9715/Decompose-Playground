@@ -25,7 +25,9 @@ interface ListingComponent {
 
     fun onAdvertDetailsCloseClicked()
 
-    fun onFilterClicked()
+    fun onFilterClicked(sqb: Int)
+
+    fun onFilterApplied(sqb: Int)
 
     sealed interface Child {
 
@@ -47,7 +49,7 @@ class ListingComponentImpl(
     override val childStack: Value<ChildStack<*, ListingComponent.Child>> =
             childStack(
                     source = navigation,
-                    initialConfiguration = Config.AdvertList,
+                    initialConfiguration = Config.AdvertList(),
                     handleBackButton = true,
                     childFactory = ::child,
             )
@@ -60,8 +62,12 @@ class ListingComponentImpl(
         navigation.pop()
     }
 
-    override fun onFilterClicked() {
-        navigation.push(Config.Filter)
+    override fun onFilterClicked(sqb: Int) {
+        navigation.push(Config.Filter(sqb))
+    }
+
+    override fun onFilterApplied(sqb: Int) {
+        navigation.push(Config.AdvertList(sqb))
     }
 
     private fun child(config: Config, componentContext: ComponentContext): ListingComponent.Child =
@@ -73,6 +79,7 @@ class ListingComponentImpl(
                                 onAdvertClicked = ::onAdvertClicked,
                                 onFilterClicked = ::onFilterClicked,
                                 showBottomNavigation = showBottomNavigation,
+                                sqb = config.sqb,
                         )
                 )
                 is Config.AdvertDetails -> ListingComponent.Child.AdvertDetails(
@@ -88,6 +95,8 @@ class ListingComponentImpl(
                         component = FilterComponentImpl(
                                 componentContext = componentContext,
                                 hideBottomNavigation = hideBottomNavigation,
+                                onFilterApplied = ::onFilterApplied,
+                                sqb = config.sqb,
                         )
                 )
             }
@@ -95,12 +104,12 @@ class ListingComponentImpl(
     private sealed interface Config : Parcelable {
 
         @Parcelize
-        data object AdvertList : Config
+        data class AdvertList(val sqb: Int = 0) : Config
 
         @Parcelize
         data class AdvertDetails(val id: Long) : Config
 
         @Parcelize
-        data object Filter : Config
+        data class Filter(val sqb: Int = 0) : Config
     }
 }
