@@ -15,7 +15,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val root = RootComponentImpl(componentContext = defaultComponentContext())
+        val root = RootComponentImpl(componentContext = defaultComponentContext(), activity = this)
 
         setContent {
             MaterialTheme {

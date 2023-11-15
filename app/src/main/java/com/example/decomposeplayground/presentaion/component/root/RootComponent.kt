@@ -3,16 +3,17 @@ package com.example.decomposeplayground.presentaion.component.root
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.slot.ChildSlot
 import com.arkivanov.decompose.router.slot.SlotNavigation
-import com.arkivanov.decompose.router.slot.activate
 import com.arkivanov.decompose.router.slot.childSlot
-import com.arkivanov.decompose.router.slot.dismiss
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.childStack
 import com.arkivanov.decompose.router.stack.push
+import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.Value
+import com.arkivanov.decompose.value.update
 import com.arkivanov.essenty.backhandler.BackCallback
 import com.arkivanov.essenty.parcelable.Parcelable
+import com.example.decomposeplayground.presentaion.MainActivity
 import com.example.decomposeplayground.presentaion.component.bottomnavigation.BottomNavigationComponent
 import com.example.decomposeplayground.presentaion.component.bottomnavigation.BottomNavigationComponentImpl
 import com.example.decomposeplayground.presentaion.component.exitdialog.ExitDialogComponent
@@ -21,7 +22,11 @@ import com.example.decomposeplayground.presentaion.component.postadvert.PostAdve
 import com.example.decomposeplayground.presentaion.component.postadvert.PostAdvertComponentImpl
 import kotlinx.parcelize.Parcelize
 
+private const val EXIT_APPLICATION_TIMEOUT = 2000
+
 interface RootComponent {
+
+    val state: Value<State>
 
     val childStack: Value<ChildStack<*, Child>>
 
@@ -33,6 +38,10 @@ interface RootComponent {
 
     fun onExitDialogConfirmed()
 
+    fun onToastShown()
+
+    data class State(val toast: String? = null)
+
     sealed interface Child {
 
         data class MainTabsChild(val component: BottomNavigationComponent) : Child
@@ -42,7 +51,13 @@ interface RootComponent {
 
 class RootComponentImpl(
         componentContext: ComponentContext,
+        private val activity: MainActivity,
 ) : RootComponent, ComponentContext by componentContext {
+
+    private var backPressedTime = 0L
+
+    private val _state = MutableValue(RootComponent.State(null))
+    override val state: Value<RootComponent.State> = _state
 
     //stack navigation
     private val navigation = StackNavigation<Config>()
@@ -86,7 +101,15 @@ class RootComponentImpl(
 
     //back callback
     private val backCallback = BackCallback {
-        dialogNavigation.activate(DialogConfig)
+//        dialogNavigation.activate(DialogConfig)
+        if (backPressedTime + EXIT_APPLICATION_TIMEOUT > System.currentTimeMillis()) {
+            activity.finish()
+
+            return@BackCallback
+        }
+
+        _state.update { _state.value.copy(toast = "Чтобы выйти из приложения, нажмите НАЗАД еще раз") }
+        backPressedTime = System.currentTimeMillis()
     }
 
     init {
@@ -98,15 +121,15 @@ class RootComponentImpl(
     }
 
     override fun onExitDialogDismissed() {
-        dialogNavigation.dismiss()
+//        dialogNavigation.dismiss()
     }
 
     override fun onExitDialogConfirmed() {
-        dialogNavigation.dismiss()
-//        backHandler.unregister(backCallback)
-//        backCallback.isEnabled = false
-        backCallback.onBack()
-        //todo click back button
+//        dialogNavigation.dismiss()
+    }
+
+    override fun onToastShown() {
+        _state.update { _state.value.copy(toast = null) }
     }
 
     private sealed interface Config : Parcelable {
