@@ -8,8 +8,8 @@ import com.arkivanov.decompose.router.stack.push
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.essenty.parcelable.Parcelable
 import com.example.decomposeplayground.data.database.DefaultAdvertsDatabase
-import com.example.decomposeplayground.presentaion.component.maintabs.MainTabsComponent
-import com.example.decomposeplayground.presentaion.component.maintabs.MainTabsComponentImpl
+import com.example.decomposeplayground.presentaion.component.bottomnavigation.BottomNavigationComponent
+import com.example.decomposeplayground.presentaion.component.bottomnavigation.BottomNavigationComponentImpl
 import com.example.decomposeplayground.presentaion.component.postadvert.PostAdvertComponent
 import com.example.decomposeplayground.presentaion.component.postadvert.PostAdvertComponentImpl
 import kotlinx.parcelize.Parcelize
@@ -22,7 +22,7 @@ interface RootComponent {
 
     sealed interface Child {
 
-        data class MainTabsChild(val component: MainTabsComponent) : Child
+        data class MainTabsChild(val component: BottomNavigationComponent) : Child
         data class PostAdvertChild(val component: PostAdvertComponent) : Child
     }
 }
@@ -50,7 +50,7 @@ class RootComponentImpl(
     private fun child(config: Config, componentContext: ComponentContext): RootComponent.Child =
             when (config) {
                 is Config.MainTabs -> RootComponent.Child.MainTabsChild(
-                        component = MainTabsComponentImpl(
+                        component = BottomNavigationComponentImpl(
                                 componentContext = componentContext,
                                 database = database,
                                 onPostAdvertTabClicked = ::onPostAdvertTabClicked,

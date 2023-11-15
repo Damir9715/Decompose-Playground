@@ -1,4 +1,4 @@
-package com.example.decomposeplayground.presentaion.component.maintabs
+package com.example.decomposeplayground.presentaion.component.bottomnavigation
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -25,8 +25,8 @@ import com.example.decomposeplayground.presentaion.component.listing.ListingCont
 import com.example.decomposeplayground.presentaion.component.messages.MessagesContent
 
 @Composable
-fun MainTabsContent(
-        component: MainTabsComponent,
+fun BottomNavigationContent(
+        component: BottomNavigationComponent,
         modifier: Modifier = Modifier,
 ) {
     val childStack by component.childStack.subscribeAsState()
@@ -40,19 +40,19 @@ fun MainTabsContent(
                 animation = stackAnimation(fade()),
         ) {
             when (val child = it.instance) {
-                is MainTabsComponent.Child.AdvertListChild -> ListingContent(
+                is BottomNavigationComponent.Child.AdvertListChild -> ListingContent(
                         component = child.component,
                         modifier = Modifier.fillMaxSize()
                 )
-                is MainTabsComponent.Child.FavoritesChild -> FavoritesContent(
+                is BottomNavigationComponent.Child.FavoritesChild -> FavoritesContent(
                         component = child.component,
                         modifier = Modifier.fillMaxSize()
                 )
-                is MainTabsComponent.Child.MessagesChild -> MessagesContent(
+                is BottomNavigationComponent.Child.MessagesChild -> MessagesContent(
                         component = child.component,
                         modifier = Modifier.fillMaxSize()
                 )
-                is MainTabsComponent.Child.CabinetChild -> CabinetContent(
+                is BottomNavigationComponent.Child.CabinetChild -> CabinetContent(
                         component = child.component,
                         modifier = Modifier.fillMaxSize()
                 )
@@ -62,12 +62,12 @@ fun MainTabsContent(
         if (state.isBottomNavigationVisible) {
             BottomNavigation(modifier = Modifier.fillMaxWidth()) {
                 BottomNavigationItem(
-                        selected = activeComponent is MainTabsComponent.Child.AdvertListChild,
+                        selected = activeComponent is BottomNavigationComponent.Child.AdvertListChild,
                         onClick = component::onAdvertListTabClicked,
                         icon = { Icon(Icons.Default.Home, "Home") },
                 )
                 BottomNavigationItem(
-                        selected = activeComponent is MainTabsComponent.Child.FavoritesChild,
+                        selected = activeComponent is BottomNavigationComponent.Child.FavoritesChild,
                         onClick = component::onFavoritesTabClicked,
                         icon = { Icon(Icons.Filled.Favorite, "Favorites") },
                 )
@@ -77,12 +77,12 @@ fun MainTabsContent(
                         icon = { Icon(Icons.Default.AddCircle, "PostAdvert") },
                 )
                 BottomNavigationItem(
-                        selected = activeComponent is MainTabsComponent.Child.MessagesChild,
+                        selected = activeComponent is BottomNavigationComponent.Child.MessagesChild,
                         onClick = component::onMessagesTabClicked,
                         icon = { Icon(Icons.Default.MailOutline, "Messages") },
                 )
                 BottomNavigationItem(
-                        selected = activeComponent is MainTabsComponent.Child.CabinetChild,
+                        selected = activeComponent is BottomNavigationComponent.Child.CabinetChild,
                         onClick = component::onCabinetTabClicked,
                         icon = { Icon(Icons.Default.AccountCircle, "Cabinet") },
                 )

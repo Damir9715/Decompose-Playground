@@ -1,4 +1,4 @@
-package com.example.decomposeplayground.presentaion.component.maintabs
+package com.example.decomposeplayground.presentaion.component.bottomnavigation
 
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.ChildStack
@@ -20,7 +20,7 @@ import com.example.decomposeplayground.presentaion.component.messages.MessagesCo
 import com.example.decomposeplayground.presentaion.component.messages.MessagesComponentImpl
 import kotlinx.parcelize.Parcelize
 
-interface MainTabsComponent {
+interface BottomNavigationComponent {
 
     val state: Value<State>
 
@@ -46,19 +46,19 @@ interface MainTabsComponent {
     }
 }
 
-class MainTabsComponentImpl(
+class BottomNavigationComponentImpl(
         componentContext: ComponentContext,
         private val database: AdvertsDatabase,
         private val onPostAdvertTabClicked: () -> Unit,
-) : MainTabsComponent, ComponentContext by componentContext {
+) : BottomNavigationComponent, ComponentContext by componentContext {
 
-    private var _state = MutableValue(MainTabsComponent.State(false))
+    private var _state = MutableValue(BottomNavigationComponent.State(false))
 
-    override val state: Value<MainTabsComponent.State> = _state
+    override val state: Value<BottomNavigationComponent.State> = _state
 
     private val navigation = StackNavigation<Config>()
 
-    override val childStack: Value<ChildStack<*, MainTabsComponent.Child>> =
+    override val childStack: Value<ChildStack<*, BottomNavigationComponent.Child>> =
             childStack(
                     source = navigation,
                     initialConfiguration = Config.AdvertList,
@@ -66,9 +66,9 @@ class MainTabsComponentImpl(
                     childFactory = ::child,
             )
 
-    private fun child(config: Config, componentContext: ComponentContext): MainTabsComponent.Child =
+    private fun child(config: Config, componentContext: ComponentContext): BottomNavigationComponent.Child =
             when (config) {
-                is Config.AdvertList -> MainTabsComponent.Child.AdvertListChild(
+                is Config.AdvertList -> BottomNavigationComponent.Child.AdvertListChild(
                         component = ListingComponentImpl(
                                 componentContext = componentContext,
                                 database = database,
@@ -76,17 +76,17 @@ class MainTabsComponentImpl(
                                 hideBottomNavigation = ::hideBottomNavigation,
                         )
                 )
-                is Config.Favorites -> MainTabsComponent.Child.FavoritesChild(
+                is Config.Favorites -> BottomNavigationComponent.Child.FavoritesChild(
                         component = FavoritesComponentImpl(
                                 componentContext = componentContext
                         )
                 )
-                is Config.Cabinet -> MainTabsComponent.Child.CabinetChild(
+                is Config.Cabinet -> BottomNavigationComponent.Child.CabinetChild(
                         component = CabinetComponentImpl(
                                 componentContext = componentContext
                         )
                 )
-                is Config.Messages -> MainTabsComponent.Child.MessagesChild(
+                is Config.Messages -> BottomNavigationComponent.Child.MessagesChild(
                         component = MessagesComponentImpl(
                                 componentContext = componentContext
                         )
