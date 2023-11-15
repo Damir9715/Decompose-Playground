@@ -19,9 +19,9 @@ import com.arkivanov.decompose.extensions.compose.jetpack.stack.Children
 import com.arkivanov.decompose.extensions.compose.jetpack.stack.animation.fade
 import com.arkivanov.decompose.extensions.compose.jetpack.stack.animation.stackAnimation
 import com.arkivanov.decompose.extensions.compose.jetpack.subscribeAsState
-import com.example.decomposeplayground.presentaion.component.listing.ListingContent
 import com.example.decomposeplayground.presentaion.component.cabinet.CabinetContent
 import com.example.decomposeplayground.presentaion.component.favorites.FavoritesContent
+import com.example.decomposeplayground.presentaion.component.listing.ListingContent
 import com.example.decomposeplayground.presentaion.component.messages.MessagesContent
 
 @Composable
@@ -31,6 +31,7 @@ fun MainTabsContent(
 ) {
     val childStack by component.childStack.subscribeAsState()
     val activeComponent = childStack.active.instance
+    val state by component.state.subscribeAsState()
 
     Column(modifier = modifier) {
         Children(
@@ -58,32 +59,34 @@ fun MainTabsContent(
             }
         }
 
-        BottomNavigation(modifier = Modifier.fillMaxWidth()) {
-            BottomNavigationItem(
-                    selected = activeComponent is MainTabsComponent.Child.AdvertListChild,
-                    onClick = component::onAdvertListTabClicked,
-                    icon = { Icon(Icons.Default.Home, "Home") },
-            )
-            BottomNavigationItem(
-                    selected = activeComponent is MainTabsComponent.Child.FavoritesChild,
-                    onClick = component::onFavoritesTabClicked,
-                    icon = { Icon(Icons.Filled.Favorite, "Favorites") },
-            )
-            BottomNavigationItem(
-                    selected = false,
-                    onClick = component::onPostAdvertTabClicked,
-                    icon = { Icon(Icons.Default.AddCircle, "PostAdvert") },
-            )
-            BottomNavigationItem(
-                    selected = activeComponent is MainTabsComponent.Child.MessagesChild,
-                    onClick = component::onMessagesTabClicked,
-                    icon = { Icon(Icons.Default.MailOutline, "Messages") },
-            )
-            BottomNavigationItem(
-                    selected = activeComponent is MainTabsComponent.Child.CabinetChild,
-                    onClick = component::onCabinetTabClicked,
-                    icon = { Icon(Icons.Default.AccountCircle, "Cabinet") },
-            )
+        if (state.isBottomNavigationVisible) {
+            BottomNavigation(modifier = Modifier.fillMaxWidth()) {
+                BottomNavigationItem(
+                        selected = activeComponent is MainTabsComponent.Child.AdvertListChild,
+                        onClick = component::onAdvertListTabClicked,
+                        icon = { Icon(Icons.Default.Home, "Home") },
+                )
+                BottomNavigationItem(
+                        selected = activeComponent is MainTabsComponent.Child.FavoritesChild,
+                        onClick = component::onFavoritesTabClicked,
+                        icon = { Icon(Icons.Filled.Favorite, "Favorites") },
+                )
+                BottomNavigationItem(
+                        selected = false,
+                        onClick = component::onPostAdvertTabClicked,
+                        icon = { Icon(Icons.Default.AddCircle, "PostAdvert") },
+                )
+                BottomNavigationItem(
+                        selected = activeComponent is MainTabsComponent.Child.MessagesChild,
+                        onClick = component::onMessagesTabClicked,
+                        icon = { Icon(Icons.Default.MailOutline, "Messages") },
+                )
+                BottomNavigationItem(
+                        selected = activeComponent is MainTabsComponent.Child.CabinetChild,
+                        onClick = component::onCabinetTabClicked,
+                        icon = { Icon(Icons.Default.AccountCircle, "Cabinet") },
+                )
+            }
         }
     }
 }

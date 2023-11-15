@@ -22,11 +22,11 @@ fun AdvertDetailsContent(
         component: AdvertDetailsComponent,
         modifier: Modifier,
 ) {
-    val advertDetails by component.state.subscribeAsState()
+    val state by component.state.subscribeAsState()
 
     Column(modifier = modifier) {
         TopAppBar(
-                title = { Text(advertDetails.title) },
+                title = { Text(state.advertDetails.title) },
                 navigationIcon = {
                     IconButton(onClick = component::onCloseClicked) {
                         Icon(Icons.Default.ArrowBack, "ArrowBack")
@@ -34,7 +34,7 @@ fun AdvertDetailsContent(
                 }
         )
         Text(
-                text = advertDetails.text,
+                text = state.advertDetails.text,
                 modifier = Modifier
                         .fillMaxHeight()
                         .verticalScroll(rememberScrollState())

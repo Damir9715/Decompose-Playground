@@ -3,6 +3,7 @@ package com.example.decomposeplayground.presentaion.component.advertlist
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.Value
+import com.arkivanov.essenty.lifecycle.Lifecycle
 import com.example.decomposeplayground.data.database.AdvertsDatabase
 
 interface AdvertListComponent {
@@ -29,6 +30,7 @@ class AdvertListComponentImpl(
         database: AdvertsDatabase,
         private val onAdvertClicked: (Long) -> Unit,
         private val onFilterClicked: () -> Unit,
+        private val showBottomNavigation: () -> Unit,
 ) : AdvertListComponent, ComponentContext by componentContext {
 
     private val _state = MutableValue(
@@ -39,6 +41,15 @@ class AdvertListComponentImpl(
                     selectedAdvertId = null,
             )
     )
+
+    init {
+        lifecycle.subscribe(object : Lifecycle.Callbacks {
+            override fun onStart() {
+                super.onCreate()
+                showBottomNavigation.invoke()
+            }
+        })
+    }
 
     override val state: Value<AdvertListComponent.State> = _state
 

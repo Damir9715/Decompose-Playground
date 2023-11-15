@@ -9,8 +9,6 @@ import com.arkivanov.decompose.extensions.compose.jetpack.stack.Children
 import com.arkivanov.decompose.extensions.compose.jetpack.stack.animation.fade
 import com.arkivanov.decompose.extensions.compose.jetpack.stack.animation.stackAnimation
 import com.arkivanov.decompose.extensions.compose.jetpack.subscribeAsState
-import com.example.decomposeplayground.presentaion.component.advertdetails.AdvertDetailsContent
-import com.example.decomposeplayground.presentaion.component.filter.FilterContent
 import com.example.decomposeplayground.presentaion.component.maintabs.MainTabsContent
 import com.example.decomposeplayground.presentaion.component.postadvert.PostAdvertContent
 
@@ -34,14 +32,6 @@ fun RootContent(
                         modifier = Modifier.fillMaxSize()
                 )
                 is RootComponent.Child.PostAdvertChild -> PostAdvertContent(
-                        component = child.component,
-                        modifier = Modifier.fillMaxSize()
-                )
-                is RootComponent.Child.AdvertDetails -> AdvertDetailsContent(
-                        component = child.component,
-                        modifier = Modifier.fillMaxSize()
-                )
-                is RootComponent.Child.Filter -> FilterContent(
                         component = child.component,
                         modifier = Modifier.fillMaxSize()
                 )

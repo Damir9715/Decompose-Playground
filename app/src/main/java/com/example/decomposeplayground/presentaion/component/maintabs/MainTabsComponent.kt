@@ -5,7 +5,9 @@ import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.bringToFront
 import com.arkivanov.decompose.router.stack.childStack
+import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.Value
+import com.arkivanov.decompose.value.update
 import com.arkivanov.essenty.parcelable.Parcelable
 import com.example.decomposeplayground.data.database.AdvertsDatabase
 import com.example.decomposeplayground.presentaion.component.cabinet.CabinetComponent
@@ -20,6 +22,8 @@ import kotlinx.parcelize.Parcelize
 
 interface MainTabsComponent {
 
+    val state: Value<State>
+
     val childStack: Value<ChildStack<*, Child>>
 
     fun onAdvertListTabClicked()
@@ -27,6 +31,11 @@ interface MainTabsComponent {
     fun onPostAdvertTabClicked()
     fun onMessagesTabClicked()
     fun onCabinetTabClicked()
+
+    fun showBottomNavigation()
+    fun hideBottomNavigation()
+
+    data class State(val isBottomNavigationVisible: Boolean)
 
     sealed interface Child {
 
@@ -41,9 +50,11 @@ class MainTabsComponentImpl(
         componentContext: ComponentContext,
         private val database: AdvertsDatabase,
         private val onPostAdvertTabClicked: () -> Unit,
-        private val onAdvertClicked: (Long) -> Unit,
-        private val onFilterClicked: () -> Unit,
 ) : MainTabsComponent, ComponentContext by componentContext {
+
+    private var _state = MutableValue(MainTabsComponent.State(false))
+
+    override val state: Value<MainTabsComponent.State> = _state
 
     private val navigation = StackNavigation<Config>()
 
@@ -61,8 +72,8 @@ class MainTabsComponentImpl(
                         component = ListingComponentImpl(
                                 componentContext = componentContext,
                                 database = database,
-                                onAdvertClicked = onAdvertClicked,
-                                onFilterClicked = onFilterClicked,
+                                showBottomNavigation = ::showBottomNavigation,
+                                hideBottomNavigation = ::hideBottomNavigation,
                         )
                 )
                 is Config.Favorites -> MainTabsComponent.Child.FavoritesChild(
@@ -100,6 +111,14 @@ class MainTabsComponentImpl(
 
     override fun onCabinetTabClicked() {
         navigation.bringToFront(Config.Cabinet)
+    }
+
+    override fun showBottomNavigation() {
+        _state.update { _state.value.copy(isBottomNavigationVisible = true) }
+    }
+
+    override fun hideBottomNavigation() {
+        _state.update { _state.value.copy(isBottomNavigationVisible = false) }
     }
 
     private sealed interface Config : Parcelable {
