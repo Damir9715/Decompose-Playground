@@ -41,8 +41,15 @@ fun AdvertListContent(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically,
         ) {
-            Text(text = "AdvertList", fontSize = 24.sp, modifier = Modifier.padding(start = 16.dp))
-            Button(modifier = Modifier.padding(2.dp), onClick = { }) {
+            Text(
+                    text = "AdvertList",
+                    fontSize = 24.sp,
+                    modifier = Modifier.padding(start = 16.dp)
+            )
+            Button(
+                    modifier = Modifier.padding(2.dp),
+                    onClick = { component.onFilterClicked() }
+            ) {
                 Text(text = "Filter", fontSize = 24.sp)
             }
         }

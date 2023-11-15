@@ -11,6 +11,8 @@ interface AdvertListComponent {
 
     fun onAdvertClicked(id: Long)
 
+    fun onFilterClicked()
+
     data class State(
             val adverts: List<Advert>,
             val selectedAdvertId: Long?,
@@ -26,6 +28,7 @@ class AdvertListComponentImpl(
         componentContext: ComponentContext,
         database: AdvertsDatabase,
         private val onAdvertClicked: (Long) -> Unit,
+        private val onFilterClicked: () -> Unit,
 ) : AdvertListComponent, ComponentContext by componentContext {
 
     private val _state = MutableValue(
@@ -41,5 +44,9 @@ class AdvertListComponentImpl(
 
     override fun onAdvertClicked(id: Long) {
         onAdvertClicked.invoke(id)
+    }
+
+    override fun onFilterClicked() {
+        onFilterClicked.invoke()
     }
 }

@@ -27,6 +27,7 @@ class ListingComponentImpl(
         componentContext: ComponentContext,
         private val database: AdvertsDatabase,
         private val onAdvertClicked: (Long) -> Unit,
+        private val onFilterClicked: () -> Unit,
 ) : ListingComponent, ComponentContext by componentContext {
 
     private val navigation = StackNavigation<Config>()
@@ -50,6 +51,7 @@ class ListingComponentImpl(
                                 componentContext = componentContext,
                                 database = database,
                                 onAdvertClicked = ::onAdvertClicked,
+                                onFilterClicked = onFilterClicked,
                         )
                 )
             }

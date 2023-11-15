@@ -42,6 +42,7 @@ class MainTabsComponentImpl(
         private val database: AdvertsDatabase,
         private val onPostAdvertTabClicked: () -> Unit,
         private val onAdvertClicked: (Long) -> Unit,
+        private val onFilterClicked: () -> Unit,
 ) : MainTabsComponent, ComponentContext by componentContext {
 
     private val navigation = StackNavigation<Config>()
@@ -61,6 +62,7 @@ class MainTabsComponentImpl(
                                 componentContext = componentContext,
                                 database = database,
                                 onAdvertClicked = onAdvertClicked,
+                                onFilterClicked = onFilterClicked,
                         )
                 )
                 is Config.Favorites -> MainTabsComponent.Child.FavoritesChild(
