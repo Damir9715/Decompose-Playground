@@ -1,4 +1,4 @@
-package com.example.decomposeplayground.presentaion.component.messages
+package com.example.decomposeplayground.presentaion.component.settings
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -10,8 +10,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun MessagesContent(
-        component: MessagesComponent,
+fun SettingsContent(
+        component: SettingsComponent,
         modifier: Modifier,
 ) {
 
@@ -19,6 +19,6 @@ fun MessagesContent(
             modifier = modifier.background(Color.Gray),
             contentAlignment = Alignment.Center
     ) {
-        Text(text = "Messages", fontSize = 50.sp)
+        Text(text = "Settings", fontSize = 50.sp)
     }
 }

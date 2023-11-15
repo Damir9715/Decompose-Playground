@@ -19,9 +19,9 @@ import com.arkivanov.decompose.extensions.compose.jetpack.stack.Children
 import com.arkivanov.decompose.extensions.compose.jetpack.stack.animation.fade
 import com.arkivanov.decompose.extensions.compose.jetpack.stack.animation.stackAnimation
 import com.arkivanov.decompose.extensions.compose.jetpack.subscribeAsState
-import com.example.decomposeplayground.presentaion.component.cabinet.CabinetContent
+import com.example.decomposeplayground.presentaion.component.cabinetscope.CabinetScopeContent
 import com.example.decomposeplayground.presentaion.component.favorites.FavoritesContent
-import com.example.decomposeplayground.presentaion.component.listing.ListingContent
+import com.example.decomposeplayground.presentaion.component.listingscope.ListingScopeContent
 import com.example.decomposeplayground.presentaion.component.messages.MessagesContent
 
 @Composable
@@ -40,7 +40,7 @@ fun BottomNavigationContent(
                 animation = stackAnimation(fade()),
         ) {
             when (val child = it.instance) {
-                is BottomNavigationComponent.Child.AdvertListChild -> ListingContent(
+                is BottomNavigationComponent.Child.AdvertListChild -> ListingScopeContent(
                         component = child.component,
                         modifier = Modifier.fillMaxSize()
                 )
@@ -52,7 +52,7 @@ fun BottomNavigationContent(
                         component = child.component,
                         modifier = Modifier.fillMaxSize()
                 )
-                is BottomNavigationComponent.Child.CabinetChild -> CabinetContent(
+                is BottomNavigationComponent.Child.CabinetChild -> CabinetScopeContent(
                         component = child.component,
                         modifier = Modifier.fillMaxSize()
                 )

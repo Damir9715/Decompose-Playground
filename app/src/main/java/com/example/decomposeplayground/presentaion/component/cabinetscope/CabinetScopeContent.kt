@@ -1,4 +1,4 @@
-package com.example.decomposeplayground.presentaion.component.root
+package com.example.decomposeplayground.presentaion.component.cabinetscope
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
@@ -8,14 +8,13 @@ import com.arkivanov.decompose.extensions.compose.jetpack.stack.Children
 import com.arkivanov.decompose.extensions.compose.jetpack.stack.animation.fade
 import com.arkivanov.decompose.extensions.compose.jetpack.stack.animation.stackAnimation
 import com.arkivanov.decompose.extensions.compose.jetpack.subscribeAsState
-import com.example.decomposeplayground.presentaion.component.bottomnavigation.BottomNavigationContent
-import com.example.decomposeplayground.presentaion.component.postadvert.PostAdvertContent
-
+import com.example.decomposeplayground.presentaion.component.cabinet.CabinetContent
+import com.example.decomposeplayground.presentaion.component.settings.SettingsContent
 
 @Composable
-fun RootContent(
-        component: RootComponent,
-        modifier: Modifier = Modifier,
+fun CabinetScopeContent(
+        component: CabinetScopeComponent,
+        modifier: Modifier,
 ) {
     val childStack by component.childStack.subscribeAsState()
 
@@ -25,11 +24,11 @@ fun RootContent(
             animation = stackAnimation(fade()),
     ) {
         when (val child = it.instance) {
-            is RootComponent.Child.MainTabsChild -> BottomNavigationContent(
+            is CabinetScopeComponent.Child.CabinetChild -> CabinetContent(
                     component = child.component,
                     modifier = Modifier.fillMaxSize()
             )
-            is RootComponent.Child.PostAdvertChild -> PostAdvertContent(
+            is CabinetScopeComponent.Child.SettingsChild -> SettingsContent(
                     component = child.component,
                     modifier = Modifier.fillMaxSize()
             )
