@@ -1,9 +1,6 @@
 package com.example.decomposeplayground.presentaion.component.root
 
 import com.arkivanov.decompose.ComponentContext
-import com.arkivanov.decompose.router.slot.ChildSlot
-import com.arkivanov.decompose.router.slot.SlotNavigation
-import com.arkivanov.decompose.router.slot.childSlot
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.childStack
@@ -16,8 +13,6 @@ import com.arkivanov.essenty.parcelable.Parcelable
 import com.example.decomposeplayground.presentaion.MainActivity
 import com.example.decomposeplayground.presentaion.component.bottomnavigation.BottomNavigationComponent
 import com.example.decomposeplayground.presentaion.component.bottomnavigation.BottomNavigationComponentImpl
-import com.example.decomposeplayground.presentaion.component.exitdialog.ExitDialogComponent
-import com.example.decomposeplayground.presentaion.component.exitdialog.ExitDialogComponentImpl
 import com.example.decomposeplayground.presentaion.component.postadvert.PostAdvertComponent
 import com.example.decomposeplayground.presentaion.component.postadvert.PostAdvertComponentImpl
 import kotlinx.parcelize.Parcelize
@@ -30,13 +25,7 @@ interface RootComponent {
 
     val childStack: Value<ChildStack<*, Child>>
 
-    val dialogSlot: Value<ChildSlot<*, ExitDialogComponent>>
-
     fun onPostAdvertTabClicked()
-
-    fun onExitDialogDismissed()
-
-    fun onExitDialogConfirmed()
 
     fun onToastShown()
 
@@ -84,24 +73,8 @@ class RootComponentImpl(
                 )
             }
 
-    //dialog navigation
-    private val dialogNavigation = SlotNavigation<DialogConfig>()
-    private val _dialogSlot =
-            childSlot<DialogConfig, ExitDialogComponent>(
-                    source = dialogNavigation,
-                    handleBackButton = true,
-                    childFactory = { _, _ ->
-                        ExitDialogComponentImpl(
-                                onDismissed = ::onExitDialogDismissed,
-                                onConfirmed = ::onExitDialogConfirmed,
-                        )
-                    }
-            )
-    override val dialogSlot: Value<ChildSlot<*, ExitDialogComponent>> = _dialogSlot
-
     //back callback
     private val backCallback = BackCallback {
-//        dialogNavigation.activate(DialogConfig)
         if (backPressedTime + EXIT_APPLICATION_TIMEOUT > System.currentTimeMillis()) {
             activity.finish()
 
@@ -120,14 +93,6 @@ class RootComponentImpl(
         navigation.push(Config.PostAdvert)
     }
 
-    override fun onExitDialogDismissed() {
-//        dialogNavigation.dismiss()
-    }
-
-    override fun onExitDialogConfirmed() {
-//        dialogNavigation.dismiss()
-    }
-
     override fun onToastShown() {
         _state.update { _state.value.copy(toast = null) }
     }
@@ -140,7 +105,4 @@ class RootComponentImpl(
         @Parcelize
         data object PostAdvert : Config
     }
-
-    @Parcelize
-    private object DialogConfig : Parcelable
 }

@@ -1,4 +1,4 @@
-package com.example.decomposeplayground.presentaion.component.exitdialog
+package com.example.decomposeplayground.presentaion.component.ordercall
 
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.AlertDialog
@@ -9,22 +9,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun ExitDialogContent(dialogComponent: ExitDialogComponent) {
+fun OrderCallDialogContent(dialogComponent: OrderCallDialogComponent) {
     AlertDialog(
             onDismissRequest = {
                 dialogComponent.onDismissed()
             },
             title = {
-                Text(text = "Вы действительно хотите закрыть приложение?")
+                Text(text = "Order call dialog")
             },
             confirmButton = {
-                TextButton(onClick = { dialogComponent.onConfirmed() }) {
-                    Text("Да")
-                }
-            },
-            dismissButton = {
                 TextButton(onClick = { dialogComponent.onDismissed() }) {
-                    Text("Нет")
+                    Text("Close")
                 }
             },
             modifier = Modifier.width(300.dp),
