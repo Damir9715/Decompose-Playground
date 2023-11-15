@@ -1,4 +1,4 @@
-package com.example.decomposeplayground.presentaion.component.cabinet
+package com.example.decomposeplayground.presentaion.component.filter
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -8,17 +8,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.sp
-import com.example.decomposeplayground.presentaion.component.cabinet.CabinetComponent
 
 @Composable
-fun CabinetContent(
-        component: CabinetComponent,
+fun FilterContent(
+        component: FilterComponent,
         modifier: Modifier,
 ) {
     Box(
             modifier = modifier.background(Color.Gray),
             contentAlignment = Alignment.Center
     ) {
-        Text(text = "Cabinet", fontSize = 50.sp)
+        Text(text = "Filter", fontSize = 50.sp)
     }
 }
