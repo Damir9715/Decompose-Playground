@@ -9,7 +9,7 @@ import com.arkivanov.decompose.router.stack.pop
 import com.arkivanov.decompose.router.stack.push
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.essenty.parcelable.Parcelable
-import com.example.decomposeplayground.data.database.AdvertsDatabase
+import com.example.decomposeplayground.data.database.DefaultAdvertsDatabase
 import com.example.decomposeplayground.presentaion.component.advertdetails.AdvertDetailsComponent
 import com.example.decomposeplayground.presentaion.component.advertdetails.AdvertDetailsComponentImpl
 import com.example.decomposeplayground.presentaion.component.advertlist.AdvertListComponent
@@ -40,10 +40,11 @@ interface ListingHolderComponent {
 
 class ListingHolderComponentImpl(
         componentContext: ComponentContext,
-        private val database: AdvertsDatabase,
         private val showBottomNavigation: () -> Unit,
         private val hideBottomNavigation: () -> Unit,
 ) : ListingHolderComponent, ComponentContext by componentContext {
+
+    private val database = DefaultAdvertsDatabase()
 
     private val navigation = StackNavigation<Config>()
 

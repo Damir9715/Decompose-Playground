@@ -9,7 +9,6 @@ import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.decompose.value.update
 import com.arkivanov.essenty.parcelable.Parcelable
-import com.example.decomposeplayground.data.database.AdvertsDatabase
 import com.example.decomposeplayground.presentaion.component.cabinetholder.CabinetHolderComponent
 import com.example.decomposeplayground.presentaion.component.cabinetholder.CabinetHolderComponentImpl
 import com.example.decomposeplayground.presentaion.component.favorites.FavoritesComponent
@@ -48,7 +47,6 @@ interface BottomNavigationComponent {
 
 class BottomNavigationComponentImpl(
         componentContext: ComponentContext,
-        private val database: AdvertsDatabase,
         private val onPostAdvertTabClicked: () -> Unit,
 ) : BottomNavigationComponent, ComponentContext by componentContext {
 
@@ -71,7 +69,6 @@ class BottomNavigationComponentImpl(
                 is Config.AdvertList -> BottomNavigationComponent.Child.AdvertListChild(
                         component = ListingHolderComponentImpl(
                                 componentContext = componentContext,
-                                database = database,
                                 showBottomNavigation = ::showBottomNavigation,
                                 hideBottomNavigation = ::hideBottomNavigation,
                         )

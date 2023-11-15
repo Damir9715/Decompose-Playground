@@ -9,6 +9,7 @@ import com.arkivanov.decompose.extensions.compose.jetpack.stack.animation.fade
 import com.arkivanov.decompose.extensions.compose.jetpack.stack.animation.stackAnimation
 import com.arkivanov.decompose.extensions.compose.jetpack.subscribeAsState
 import com.example.decomposeplayground.presentaion.component.bottomnavigation.BottomNavigationContent
+import com.example.decomposeplayground.presentaion.component.exitdialog.ExitDialogContent
 import com.example.decomposeplayground.presentaion.component.postadvert.PostAdvertContent
 
 
@@ -34,5 +35,10 @@ fun RootContent(
                     modifier = Modifier.fillMaxSize()
             )
         }
+    }
+
+    val dialogSlot by component.dialogSlot.subscribeAsState()
+    dialogSlot.child?.instance?.also {
+        ExitDialogContent(dialogComponent = it)
     }
 }
