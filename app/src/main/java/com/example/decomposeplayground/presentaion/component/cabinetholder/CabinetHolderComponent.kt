@@ -1,4 +1,4 @@
-package com.example.decomposeplayground.presentaion.component.cabinetscope
+package com.example.decomposeplayground.presentaion.component.cabinetholder
 
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.ChildStack
@@ -13,7 +13,7 @@ import com.example.decomposeplayground.presentaion.component.settings.SettingsCo
 import com.example.decomposeplayground.presentaion.component.settings.SettingsComponentImpl
 import kotlinx.parcelize.Parcelize
 
-interface CabinetScopeComponent {
+interface CabinetHolderComponent {
 
     val childStack: Value<ChildStack<*, Child>>
 
@@ -26,13 +26,13 @@ interface CabinetScopeComponent {
     }
 }
 
-class CabinetScopeComponentImpl(
+class CabinetHolderComponentImpl(
         componentContext: ComponentContext,
-) : CabinetScopeComponent, ComponentContext by componentContext {
+) : CabinetHolderComponent, ComponentContext by componentContext {
 
     private val navigation = StackNavigation<Config>()
 
-    override val childStack: Value<ChildStack<*, CabinetScopeComponent.Child>> =
+    override val childStack: Value<ChildStack<*, CabinetHolderComponent.Child>> =
             childStack(
                     source = navigation,
                     initialConfiguration = Config.Cabinet,
@@ -44,15 +44,15 @@ class CabinetScopeComponentImpl(
         navigation.push(Config.Settings)
     }
 
-    private fun child(config: Config, componentContext: ComponentContext): CabinetScopeComponent.Child =
+    private fun child(config: Config, componentContext: ComponentContext): CabinetHolderComponent.Child =
             when (config) {
-                is Config.Cabinet -> CabinetScopeComponent.Child.CabinetChild(
+                is Config.Cabinet -> CabinetHolderComponent.Child.CabinetChild(
                         component = CabinetComponentImpl(
                                 componentContext = componentContext,
                                 onSettingsClicked = ::onSettingsClicked,
                         )
                 )
-                is Config.Settings -> CabinetScopeComponent.Child.SettingsChild(
+                is Config.Settings -> CabinetHolderComponent.Child.SettingsChild(
                         component = SettingsComponentImpl(
                                 componentContext = componentContext,
                         )

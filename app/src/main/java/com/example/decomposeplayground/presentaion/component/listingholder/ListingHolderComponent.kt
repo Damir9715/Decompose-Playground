@@ -1,4 +1,4 @@
-package com.example.decomposeplayground.presentaion.component.listingscope
+package com.example.decomposeplayground.presentaion.component.listingholder
 
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.ChildStack
@@ -18,7 +18,7 @@ import com.example.decomposeplayground.presentaion.component.filter.FilterCompon
 import com.example.decomposeplayground.presentaion.component.filter.FilterComponentImpl
 import kotlinx.parcelize.Parcelize
 
-interface ListingScopeComponent {
+interface ListingHolderComponent {
 
     val childStack: Value<ChildStack<*, Child>>
 
@@ -38,16 +38,16 @@ interface ListingScopeComponent {
     }
 }
 
-class ListingScopeComponentImpl(
+class ListingHolderComponentImpl(
         componentContext: ComponentContext,
         private val database: AdvertsDatabase,
         private val showBottomNavigation: () -> Unit,
         private val hideBottomNavigation: () -> Unit,
-) : ListingScopeComponent, ComponentContext by componentContext {
+) : ListingHolderComponent, ComponentContext by componentContext {
 
     private val navigation = StackNavigation<Config>()
 
-    override val childStack: Value<ChildStack<*, ListingScopeComponent.Child>> =
+    override val childStack: Value<ChildStack<*, ListingHolderComponent.Child>> =
             childStack(
                     source = navigation,
                     initialConfiguration = Config.AdvertList(),
@@ -78,9 +78,9 @@ class ListingScopeComponentImpl(
         navigation.push(Config.AdvertList(sqb))
     }
 
-    private fun child(config: Config, componentContext: ComponentContext): ListingScopeComponent.Child =
+    private fun child(config: Config, componentContext: ComponentContext): ListingHolderComponent.Child =
             when (config) {
-                is Config.AdvertList -> ListingScopeComponent.Child.AdvertList(
+                is Config.AdvertList -> ListingHolderComponent.Child.AdvertList(
                         component = AdvertListComponentImpl(
                                 componentContext = componentContext,
                                 database = database,
@@ -90,7 +90,7 @@ class ListingScopeComponentImpl(
                                 sqb = config.sqb,
                         )
                 )
-                is Config.AdvertDetails -> ListingScopeComponent.Child.AdvertDetails(
+                is Config.AdvertDetails -> ListingHolderComponent.Child.AdvertDetails(
                         component = AdvertDetailsComponentImpl(
                                 componentContext = componentContext,
                                 database = database,
@@ -99,7 +99,7 @@ class ListingScopeComponentImpl(
                                 hideBottomNavigation = hideBottomNavigation,
                         )
                 )
-                is Config.Filter -> ListingScopeComponent.Child.Filter(
+                is Config.Filter -> ListingHolderComponent.Child.Filter(
                         component = FilterComponentImpl(
                                 componentContext = componentContext,
                                 hideBottomNavigation = hideBottomNavigation,

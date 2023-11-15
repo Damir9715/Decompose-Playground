@@ -10,12 +10,12 @@ import com.arkivanov.decompose.value.Value
 import com.arkivanov.decompose.value.update
 import com.arkivanov.essenty.parcelable.Parcelable
 import com.example.decomposeplayground.data.database.AdvertsDatabase
-import com.example.decomposeplayground.presentaion.component.cabinetscope.CabinetScopeComponent
-import com.example.decomposeplayground.presentaion.component.cabinetscope.CabinetScopeComponentImpl
+import com.example.decomposeplayground.presentaion.component.cabinetholder.CabinetHolderComponent
+import com.example.decomposeplayground.presentaion.component.cabinetholder.CabinetHolderComponentImpl
 import com.example.decomposeplayground.presentaion.component.favorites.FavoritesComponent
 import com.example.decomposeplayground.presentaion.component.favorites.FavoritesComponentImpl
-import com.example.decomposeplayground.presentaion.component.listingscope.ListingScopeComponent
-import com.example.decomposeplayground.presentaion.component.listingscope.ListingScopeComponentImpl
+import com.example.decomposeplayground.presentaion.component.listingholder.ListingHolderComponent
+import com.example.decomposeplayground.presentaion.component.listingholder.ListingHolderComponentImpl
 import com.example.decomposeplayground.presentaion.component.messages.MessagesComponent
 import com.example.decomposeplayground.presentaion.component.messages.MessagesComponentImpl
 import kotlinx.parcelize.Parcelize
@@ -39,10 +39,10 @@ interface BottomNavigationComponent {
 
     sealed interface Child {
 
-        data class AdvertListChild(val component: ListingScopeComponent) : Child
+        data class AdvertListChild(val component: ListingHolderComponent) : Child
         data class FavoritesChild(val component: FavoritesComponent) : Child
         data class MessagesChild(val component: MessagesComponent) : Child
-        data class CabinetChild(val component: CabinetScopeComponent) : Child
+        data class CabinetChild(val component: CabinetHolderComponent) : Child
     }
 }
 
@@ -69,7 +69,7 @@ class BottomNavigationComponentImpl(
     private fun child(config: Config, componentContext: ComponentContext): BottomNavigationComponent.Child =
             when (config) {
                 is Config.AdvertList -> BottomNavigationComponent.Child.AdvertListChild(
-                        component = ListingScopeComponentImpl(
+                        component = ListingHolderComponentImpl(
                                 componentContext = componentContext,
                                 database = database,
                                 showBottomNavigation = ::showBottomNavigation,
@@ -82,7 +82,7 @@ class BottomNavigationComponentImpl(
                         )
                 )
                 is Config.Cabinet -> BottomNavigationComponent.Child.CabinetChild(
-                        component = CabinetScopeComponentImpl(
+                        component = CabinetHolderComponentImpl(
                                 componentContext = componentContext
                         )
                 )

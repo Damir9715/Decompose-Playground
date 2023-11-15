@@ -1,4 +1,4 @@
-package com.example.decomposeplayground.presentaion.component.cabinetscope
+package com.example.decomposeplayground.presentaion.component.cabinetholder
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
@@ -12,8 +12,8 @@ import com.example.decomposeplayground.presentaion.component.cabinet.CabinetCont
 import com.example.decomposeplayground.presentaion.component.settings.SettingsContent
 
 @Composable
-fun CabinetScopeContent(
-        component: CabinetScopeComponent,
+fun CabinetHolderContent(
+        component: CabinetHolderComponent,
         modifier: Modifier,
 ) {
     val childStack by component.childStack.subscribeAsState()
@@ -24,11 +24,11 @@ fun CabinetScopeContent(
             animation = stackAnimation(fade()),
     ) {
         when (val child = it.instance) {
-            is CabinetScopeComponent.Child.CabinetChild -> CabinetContent(
+            is CabinetHolderComponent.Child.CabinetChild -> CabinetContent(
                     component = child.component,
                     modifier = Modifier.fillMaxSize()
             )
-            is CabinetScopeComponent.Child.SettingsChild -> SettingsContent(
+            is CabinetHolderComponent.Child.SettingsChild -> SettingsContent(
                     component = child.component,
                     modifier = Modifier.fillMaxSize()
             )
