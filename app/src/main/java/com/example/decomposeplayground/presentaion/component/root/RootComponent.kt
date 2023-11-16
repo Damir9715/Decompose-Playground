@@ -4,13 +4,17 @@ import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.childStack
+import com.arkivanov.decompose.router.stack.pop
 import com.arkivanov.decompose.router.stack.push
 import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.decompose.value.update
 import com.arkivanov.essenty.backhandler.BackCallback
 import com.arkivanov.essenty.parcelable.Parcelable
+import com.example.decomposeplayground.data.database.DefaultAdvertsDatabase
 import com.example.decomposeplayground.presentaion.MainActivity
+import com.example.decomposeplayground.presentaion.component.advertdetails.AdvertDetailsComponent
+import com.example.decomposeplayground.presentaion.component.advertdetails.AdvertDetailsComponentImpl
 import com.example.decomposeplayground.presentaion.component.bottomnavigation.BottomNavigationComponent
 import com.example.decomposeplayground.presentaion.component.bottomnavigation.BottomNavigationComponentImpl
 import com.example.decomposeplayground.presentaion.component.postadvert.PostAdvertComponent
@@ -31,12 +35,17 @@ interface RootComponent {
 
     fun setBackCallback(isEnabled: Boolean)
 
+    fun onAdvertClicked(id: Long)
+
+    fun onAdvertDetailsCloseClicked()
+
     data class State(val toast: String? = null)
 
     sealed interface Child {
 
         data class MainTabsChild(val component: BottomNavigationComponent) : Child
         data class PostAdvertChild(val component: PostAdvertComponent) : Child
+        data class AdvertDetails(val component: AdvertDetailsComponent) : Child
     }
 }
 
@@ -46,6 +55,8 @@ class RootComponentImpl(
 ) : RootComponent, ComponentContext by componentContext {
 
     private var backPressedTime = 0L
+
+    private val database = DefaultAdvertsDatabase()
 
     private val _state = MutableValue(RootComponent.State(null))
     override val state: Value<RootComponent.State> = _state
@@ -65,13 +76,23 @@ class RootComponentImpl(
                 is Config.MainTabs -> RootComponent.Child.MainTabsChild(
                         component = BottomNavigationComponentImpl(
                                 componentContext = componentContext,
+                                database = database,
                                 onPostAdvertTabClicked = ::onPostAdvertTabClicked,
                                 setBackCallback = ::setBackCallback,
+                                onAdvertClicked = ::onAdvertClicked,
                         )
                 )
                 is Config.PostAdvert -> RootComponent.Child.PostAdvertChild(
                         component = PostAdvertComponentImpl(
                                 componentContext = componentContext
+                        )
+                )
+                is Config.AdvertDetails -> RootComponent.Child.AdvertDetails(
+                        component = AdvertDetailsComponentImpl(
+                                componentContext = componentContext,
+                                database = database,
+                                advertId = config.id,
+                                onFinished = ::onAdvertDetailsCloseClicked,
                         )
                 )
             }
@@ -100,8 +121,16 @@ class RootComponentImpl(
         _state.update { _state.value.copy(toast = null) }
     }
 
+    override fun onAdvertClicked(id: Long) {
+        navigation.push(Config.AdvertDetails(id))
+    }
+
     override fun setBackCallback(isEnabled: Boolean) {
         backCallback.isEnabled = isEnabled
+    }
+
+    override fun onAdvertDetailsCloseClicked() {
+        navigation.pop()
     }
 
     private sealed interface Config : Parcelable {
@@ -111,5 +140,8 @@ class RootComponentImpl(
 
         @Parcelize
         data object PostAdvert : Config
+
+        @Parcelize
+        data class AdvertDetails(val id: Long) : Config
     }
 }

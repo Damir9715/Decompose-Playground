@@ -9,6 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import com.arkivanov.decompose.extensions.compose.jetpack.stack.Children
 import com.arkivanov.decompose.extensions.compose.jetpack.subscribeAsState
+import com.example.decomposeplayground.presentaion.component.advertdetails.AdvertDetailsContent
 import com.example.decomposeplayground.presentaion.component.bottomnavigation.BottomNavigationContent
 import com.example.decomposeplayground.presentaion.component.postadvert.PostAdvertContent
 
@@ -31,6 +32,10 @@ fun RootContent(
                     modifier = Modifier.fillMaxSize()
             )
             is RootComponent.Child.PostAdvertChild -> PostAdvertContent(
+                    component = child.component,
+                    modifier = Modifier.fillMaxSize()
+            )
+            is RootComponent.Child.AdvertDetails -> AdvertDetailsContent(
                     component = child.component,
                     modifier = Modifier.fillMaxSize()
             )

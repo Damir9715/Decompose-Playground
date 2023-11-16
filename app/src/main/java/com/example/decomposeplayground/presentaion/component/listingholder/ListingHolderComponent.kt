@@ -5,13 +5,10 @@ import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.childStack
 import com.arkivanov.decompose.router.stack.navigate
-import com.arkivanov.decompose.router.stack.pop
 import com.arkivanov.decompose.router.stack.push
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.essenty.parcelable.Parcelable
-import com.example.decomposeplayground.data.database.DefaultAdvertsDatabase
-import com.example.decomposeplayground.presentaion.component.advertdetails.AdvertDetailsComponent
-import com.example.decomposeplayground.presentaion.component.advertdetails.AdvertDetailsComponentImpl
+import com.example.decomposeplayground.data.database.AdvertsDatabase
 import com.example.decomposeplayground.presentaion.component.advertlist.AdvertListComponent
 import com.example.decomposeplayground.presentaion.component.advertlist.AdvertListComponentImpl
 import com.example.decomposeplayground.presentaion.component.filter.FilterComponent
@@ -24,8 +21,6 @@ interface ListingHolderComponent {
 
     fun onAdvertClicked(id: Long)
 
-    fun onAdvertDetailsCloseClicked()
-
     fun onFilterClicked(sqb: Int)
 
     fun onFilterApplied(sqb: Int)
@@ -33,18 +28,17 @@ interface ListingHolderComponent {
     sealed interface Child {
 
         data class AdvertList(val component: AdvertListComponent) : Child
-        data class AdvertDetails(val component: AdvertDetailsComponent) : Child
         data class Filter(val component: FilterComponent) : Child
     }
 }
 
 class ListingHolderComponentImpl(
         componentContext: ComponentContext,
+        private val database: AdvertsDatabase,
         private val showBottomNavigation: () -> Unit,
         private val hideBottomNavigation: () -> Unit,
+        private val onAdvertClicked: (Long) -> Unit,
 ) : ListingHolderComponent, ComponentContext by componentContext {
-
-    private val database = DefaultAdvertsDatabase()
 
     private val navigation = StackNavigation<Config>()
 
@@ -57,11 +51,7 @@ class ListingHolderComponentImpl(
             )
 
     override fun onAdvertClicked(id: Long) {
-        navigation.push(Config.AdvertDetails(id))
-    }
-
-    override fun onAdvertDetailsCloseClicked() {
-        navigation.pop()
+        onAdvertClicked.invoke(id)
     }
 
     override fun onFilterClicked(sqb: Int) {
@@ -91,15 +81,6 @@ class ListingHolderComponentImpl(
                                 showBottomNavigation = showBottomNavigation,
                         )
                 )
-                is Config.AdvertDetails -> ListingHolderComponent.Child.AdvertDetails(
-                        component = AdvertDetailsComponentImpl(
-                                componentContext = componentContext,
-                                database = database,
-                                advertId = config.id,
-                                onFinished = ::onAdvertDetailsCloseClicked,
-                                hideBottomNavigation = hideBottomNavigation,
-                        )
-                )
                 is Config.Filter -> ListingHolderComponent.Child.Filter(
                         component = FilterComponentImpl(
                                 componentContext = componentContext,
@@ -114,9 +95,6 @@ class ListingHolderComponentImpl(
 
         @Parcelize
         data class AdvertList(val sqb: Int = 0) : Config
-
-        @Parcelize
-        data class AdvertDetails(val id: Long) : Config
 
         @Parcelize
         data class Filter(val sqb: Int = 0) : Config

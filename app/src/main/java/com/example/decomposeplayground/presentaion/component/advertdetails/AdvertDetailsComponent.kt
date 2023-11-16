@@ -8,7 +8,6 @@ import com.arkivanov.decompose.router.slot.childSlot
 import com.arkivanov.decompose.router.slot.dismiss
 import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.Value
-import com.arkivanov.essenty.lifecycle.Lifecycle
 import com.arkivanov.essenty.parcelable.Parcelable
 import com.example.decomposeplayground.data.database.AdvertsDatabase
 import com.example.decomposeplayground.presentaion.component.ordercall.OrderCallDialogComponent
@@ -38,7 +37,6 @@ class AdvertDetailsComponentImpl(
         advertId: Long,
         database: AdvertsDatabase,
         private val onFinished: () -> Unit,
-        private val hideBottomNavigation: () -> Unit,
 ) : AdvertDetailsComponent, ComponentContext by componentContext {
 
     private val _state = MutableValue(
@@ -62,15 +60,6 @@ class AdvertDetailsComponentImpl(
                     }
             )
     override val dialogSlot: Value<ChildSlot<*, OrderCallDialogComponent>> = _dialogSlot
-
-    init {
-        lifecycle.subscribe(object : Lifecycle.Callbacks {
-            override fun onStart() {
-                super.onStart()
-                hideBottomNavigation.invoke()
-            }
-        })
-    }
 
     override val state: Value<AdvertDetailsComponent.State> = _state
 
