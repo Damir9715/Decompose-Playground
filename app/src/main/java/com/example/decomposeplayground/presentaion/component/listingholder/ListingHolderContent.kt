@@ -5,8 +5,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import com.arkivanov.decompose.extensions.compose.jetpack.stack.Children
-import com.arkivanov.decompose.extensions.compose.jetpack.stack.animation.fade
-import com.arkivanov.decompose.extensions.compose.jetpack.stack.animation.stackAnimation
 import com.arkivanov.decompose.extensions.compose.jetpack.subscribeAsState
 import com.example.decomposeplayground.presentaion.component.advertdetails.AdvertDetailsContent
 import com.example.decomposeplayground.presentaion.component.advertlist.AdvertListContent
@@ -22,7 +20,6 @@ fun ListingHolderContent(
     Children(
             stack = childStack,
             modifier = modifier,
-            animation = stackAnimation(fade()),
     ) {
         when (val child = it.instance) {
             is ListingHolderComponent.Child.AdvertList -> AdvertListContent(

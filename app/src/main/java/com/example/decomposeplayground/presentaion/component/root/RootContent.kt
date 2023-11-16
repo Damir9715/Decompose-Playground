@@ -8,12 +8,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import com.arkivanov.decompose.extensions.compose.jetpack.stack.Children
-import com.arkivanov.decompose.extensions.compose.jetpack.stack.animation.fade
-import com.arkivanov.decompose.extensions.compose.jetpack.stack.animation.stackAnimation
 import com.arkivanov.decompose.extensions.compose.jetpack.subscribeAsState
 import com.example.decomposeplayground.presentaion.component.bottomnavigation.BottomNavigationContent
 import com.example.decomposeplayground.presentaion.component.postadvert.PostAdvertContent
-
 
 @Composable
 fun RootContent(
@@ -27,7 +24,6 @@ fun RootContent(
     Children(
             stack = childStack,
             modifier = modifier,
-            animation = stackAnimation(fade()),
     ) {
         when (val child = it.instance) {
             is RootComponent.Child.MainTabsChild -> BottomNavigationContent(

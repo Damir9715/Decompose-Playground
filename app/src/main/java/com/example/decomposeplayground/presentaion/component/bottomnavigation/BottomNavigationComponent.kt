@@ -50,7 +50,7 @@ class BottomNavigationComponentImpl(
         private val onPostAdvertTabClicked: () -> Unit,
 ) : BottomNavigationComponent, ComponentContext by componentContext {
 
-    private var _state = MutableValue(BottomNavigationComponent.State(false))
+    private var _state = MutableValue(BottomNavigationComponent.State(true))
 
     override val state: Value<BottomNavigationComponent.State> = _state
 
@@ -75,17 +75,17 @@ class BottomNavigationComponentImpl(
                 )
                 is Config.Favorites -> BottomNavigationComponent.Child.FavoritesChild(
                         component = FavoritesComponentImpl(
-                                componentContext = componentContext
+                                componentContext = componentContext,
                         )
                 )
                 is Config.Cabinet -> BottomNavigationComponent.Child.CabinetChild(
                         component = CabinetHolderComponentImpl(
-                                componentContext = componentContext
+                                componentContext = componentContext,
                         )
                 )
                 is Config.Messages -> BottomNavigationComponent.Child.MessagesChild(
                         component = MessagesComponentImpl(
-                                componentContext = componentContext
+                                componentContext = componentContext,
                         )
                 )
             }

@@ -16,8 +16,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import com.arkivanov.decompose.extensions.compose.jetpack.stack.Children
-import com.arkivanov.decompose.extensions.compose.jetpack.stack.animation.fade
-import com.arkivanov.decompose.extensions.compose.jetpack.stack.animation.stackAnimation
 import com.arkivanov.decompose.extensions.compose.jetpack.subscribeAsState
 import com.example.decomposeplayground.presentaion.component.cabinetholder.CabinetHolderContent
 import com.example.decomposeplayground.presentaion.component.favorites.FavoritesContent
@@ -37,7 +35,6 @@ fun BottomNavigationContent(
         Children(
                 stack = childStack,
                 modifier = Modifier.weight(weight = 1F),
-                animation = stackAnimation(fade()),
         ) {
             when (val child = it.instance) {
                 is BottomNavigationComponent.Child.AdvertListChild -> ListingHolderContent(
