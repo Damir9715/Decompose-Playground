@@ -8,6 +8,7 @@ import com.arkivanov.decompose.router.stack.childStack
 import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.decompose.value.update
+import com.arkivanov.essenty.lifecycle.Lifecycle
 import com.arkivanov.essenty.parcelable.Parcelable
 import com.example.decomposeplayground.presentaion.component.cabinetholder.CabinetHolderComponent
 import com.example.decomposeplayground.presentaion.component.cabinetholder.CabinetHolderComponentImpl
@@ -48,6 +49,7 @@ interface BottomNavigationComponent {
 class BottomNavigationComponentImpl(
         componentContext: ComponentContext,
         private val onPostAdvertTabClicked: () -> Unit,
+        private val setBackCallback: (Boolean) -> Unit,
 ) : BottomNavigationComponent, ComponentContext by componentContext {
 
     private var _state = MutableValue(BottomNavigationComponent.State(true))
@@ -89,6 +91,20 @@ class BottomNavigationComponentImpl(
                         )
                 )
             }
+
+    init {
+        lifecycle.subscribe(callbacks = object : Lifecycle.Callbacks {
+            override fun onStart() {
+                super.onStart()
+                setBackCallback.invoke(true)
+            }
+
+            override fun onStop() {
+                super.onStop()
+                setBackCallback.invoke(false)
+            }
+        })
+    }
 
     override fun onAdvertListTabClicked() {
         navigation.bringToFront(Config.AdvertList)

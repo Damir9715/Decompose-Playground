@@ -29,6 +29,8 @@ interface RootComponent {
 
     fun onToastShown()
 
+    fun setBackCallback(isEnabled: Boolean)
+
     data class State(val toast: String? = null)
 
     sealed interface Child {
@@ -54,7 +56,7 @@ class RootComponentImpl(
             childStack(
                     source = navigation,
                     initialConfiguration = Config.MainTabs,
-                    handleBackButton = false,
+                    handleBackButton = true,
                     childFactory = ::child,
             )
 
@@ -64,6 +66,7 @@ class RootComponentImpl(
                         component = BottomNavigationComponentImpl(
                                 componentContext = componentContext,
                                 onPostAdvertTabClicked = ::onPostAdvertTabClicked,
+                                setBackCallback = ::setBackCallback,
                         )
                 )
                 is Config.PostAdvert -> RootComponent.Child.PostAdvertChild(
@@ -95,6 +98,10 @@ class RootComponentImpl(
 
     override fun onToastShown() {
         _state.update { _state.value.copy(toast = null) }
+    }
+
+    override fun setBackCallback(isEnabled: Boolean) {
+        backCallback.isEnabled = isEnabled
     }
 
     private sealed interface Config : Parcelable {
