@@ -4,17 +4,14 @@ import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.childStack
-import com.arkivanov.decompose.router.stack.push
 import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.decompose.value.update
 import com.arkivanov.essenty.backhandler.BackCallback
 import com.arkivanov.essenty.parcelable.Parcelable
 import com.example.decomposeplayground.presentaion.MainActivity
-import com.example.decomposeplayground.presentaion.component.bottomnavigation.BottomNavigationComponent
-import com.example.decomposeplayground.presentaion.component.bottomnavigation.BottomNavigationComponentImpl
-import com.example.decomposeplayground.presentaion.component.postadvert.PostAdvertComponent
-import com.example.decomposeplayground.presentaion.component.postadvert.PostAdvertComponentImpl
+import com.example.decomposeplayground.presentaion.component.host.HostComponent
+import com.example.decomposeplayground.presentaion.component.host.HostComponentImpl
 import kotlinx.parcelize.Parcelize
 
 private const val EXIT_APPLICATION_TIMEOUT = 2000
@@ -25,15 +22,12 @@ interface RootComponent {
 
     val childStack: Value<ChildStack<*, Child>>
 
-    fun onPostAdvertTabClicked()
-
     fun onToastShown()
 
     data class State(val toast: String? = null)
 
     sealed interface Child {
-        data class MainTabsChild(val component: BottomNavigationComponent) : Child
-        data class PostAdvertChild(val component: PostAdvertComponent) : Child
+        data class RootChild(val component: HostComponent) : Child
     }
 }
 
@@ -52,21 +46,15 @@ class RootComponentImpl(
     override val childStack: Value<ChildStack<*, RootComponent.Child>> =
             childStack(
                     source = navigation,
-                    initialConfiguration = Config.MainTabs,
+                    initialConfiguration = Config.Root,
                     handleBackButton = false,
                     childFactory = ::child,
             )
 
     private fun child(config: Config, componentContext: ComponentContext): RootComponent.Child =
             when (config) {
-                is Config.MainTabs -> RootComponent.Child.MainTabsChild(
-                        component = BottomNavigationComponentImpl(
-                                componentContext = componentContext,
-                                onPostAdvertTabClicked = ::onPostAdvertTabClicked,
-                        )
-                )
-                is Config.PostAdvert -> RootComponent.Child.PostAdvertChild(
-                        component = PostAdvertComponentImpl(
+                is Config.Root -> RootComponent.Child.RootChild(
+                        component = HostComponentImpl(
                                 componentContext = componentContext,
                         )
                 )
@@ -88,10 +76,6 @@ class RootComponentImpl(
         backHandler.register(backCallback)
     }
 
-    override fun onPostAdvertTabClicked() {
-        navigation.push(Config.PostAdvert)
-    }
-
     override fun onToastShown() {
         _state.update { _state.value.copy(toast = null) }
     }
@@ -99,9 +83,6 @@ class RootComponentImpl(
     private sealed interface Config : Parcelable {
 
         @Parcelize
-        data object MainTabs : Config
-
-        @Parcelize
-        data object PostAdvert : Config
+        data object Root : Config
     }
 }

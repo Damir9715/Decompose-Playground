@@ -1,24 +1,20 @@
-package com.example.decomposeplayground.presentaion.component.root
+package com.example.decomposeplayground.presentaion.component.host
 
-import android.widget.Toast
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import com.arkivanov.decompose.extensions.compose.jetpack.stack.Children
 import com.arkivanov.decompose.extensions.compose.jetpack.subscribeAsState
-import com.example.decomposeplayground.presentaion.component.host.HostContent
+import com.example.decomposeplayground.presentaion.component.bottomnavigation.BottomNavigationContent
+import com.example.decomposeplayground.presentaion.component.postadvert.PostAdvertContent
 
 
 @Composable
-fun RootContent(
-        component: RootComponent,
+fun HostContent(
+        component: HostComponent,
         modifier: Modifier = Modifier,
 ) {
-    val context = LocalContext.current
-    val state by component.state.subscribeAsState()
     val childStack by component.childStack.subscribeAsState()
 
     Children(
@@ -26,17 +22,14 @@ fun RootContent(
             modifier = modifier,
     ) {
         when (val child = it.instance) {
-            is RootComponent.Child.RootChild -> HostContent(
+            is HostComponent.Child.MainTabsChild -> BottomNavigationContent(
                     component = child.component,
                     modifier = Modifier.fillMaxSize()
             )
-        }
-    }
-
-    LaunchedEffect(key1 = state.toast) {
-        state.toast?.let { message ->
-            Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
-            component.onToastShown()
+            is HostComponent.Child.PostAdvertChild -> PostAdvertContent(
+                    component = child.component,
+                    modifier = Modifier.fillMaxSize()
+            )
         }
     }
 }
