@@ -35,7 +35,7 @@ fun RootContent(
                     component = child.component,
                     modifier = Modifier.fillMaxSize()
             )
-            is RootComponent.Child.AdvertDetails -> AdvertDetailsContent(
+            is RootComponent.Child.AdvertDetailsChild -> AdvertDetailsContent(
                     component = child.component,
                     modifier = Modifier.fillMaxSize()
             )

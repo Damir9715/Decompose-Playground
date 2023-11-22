@@ -21,11 +21,11 @@ fun ListingHolderContent(
             modifier = modifier,
     ) {
         when (val child = it.instance) {
-            is ListingHolderComponent.Child.AdvertList -> AdvertListContent(
+            is ListingHolderComponent.Child.AdvertListChild -> AdvertListContent(
                     component = child.component,
                     modifier = Modifier.fillMaxSize()
             )
-            is ListingHolderComponent.Child.Filter -> FilterContent(
+            is ListingHolderComponent.Child.FilterChild -> FilterContent(
                     component = child.component,
                     modifier = Modifier.fillMaxSize()
             )
