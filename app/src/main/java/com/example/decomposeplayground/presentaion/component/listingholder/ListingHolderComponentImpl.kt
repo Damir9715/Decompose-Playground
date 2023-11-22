@@ -12,6 +12,7 @@ import com.example.decomposeplayground.domain.usecase.GetAdvertListUseCase
 import com.example.decomposeplayground.presentaion.component.advertlist.AdvertListComponentImpl
 import com.example.decomposeplayground.presentaion.component.filter.FilterComponentImpl
 import kotlinx.parcelize.Parcelize
+import kotlin.random.Random
 
 class ListingHolderComponentImpl(
         componentContext: ComponentContext,
@@ -63,9 +64,9 @@ class ListingHolderComponentImpl(
         navigation.navigate { stack ->
             stack
                     //удаляем все выдачи кроме первой
-                    .filterNot { it is Config.AdvertList && it.sqb != 0 }
+                    .removeAllExceptFirst<Config.AdvertList>()
                     //удаляем все фильтры кроме последней
-                    .filterNot { it is Config.Filter && it.sqb != sqb - 1 }
+                    .removeAllExceptLast<Config.Filter>()
         }
         navigation.push(Config.AdvertList(sqb))
     }
@@ -73,9 +74,25 @@ class ListingHolderComponentImpl(
     private sealed interface Config : Parcelable {
 
         @Parcelize
-        data class AdvertList(val sqb: Int = 0) : Config
+        data class AdvertList(
+                val sqb: Int = 0,
+                private val random: Int = Random.nextInt(),
+        ) : Config
 
         @Parcelize
-        data class Filter(val sqb: Int = 0) : Config
+        data class Filter(
+                val sqb: Int = 0,
+                private val random: Int = Random.nextInt(),
+        ) : Config
     }
+
+    private inline fun <reified T> List<Config>.removeAllExceptFirst(): List<Config> =
+            filterIndexed { index, element ->
+                element !is T || index == indexOfFirst { it is T }
+            }
+
+    private inline fun <reified T> List<Config>.removeAllExceptLast(): List<Config> =
+            filterIndexed { index, element ->
+                element !is T || index == indexOfLast { it is T }
+            }
 }

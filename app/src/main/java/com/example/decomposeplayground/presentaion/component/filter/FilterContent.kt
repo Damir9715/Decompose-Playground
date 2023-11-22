@@ -21,7 +21,7 @@ fun FilterContent(
         component: FilterComponent,
         modifier: Modifier,
 ) {
-    val state by component.state.subscribeAsState()
+    val state by component.viewModel.state.subscribeAsState()
 
     Column(
             modifier = modifier.background(Color.Gray),
@@ -29,6 +29,10 @@ fun FilterContent(
             horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(text = "Filter - sqb: ${state.sqb}", fontSize = 50.sp)
+        Spacer(modifier = Modifier.padding(40.dp))
+        Button(onClick = { component.onIncrementSqbClicked() }) {
+            Text(text = "Increment sqb", fontSize = 50.sp)
+        }
         Spacer(modifier = Modifier.padding(40.dp))
         Button(onClick = { component.onFilterApplied() }) {
             Text(text = "Apply filter", fontSize = 50.sp)
