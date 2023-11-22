@@ -1,6 +1,6 @@
 package com.example.decomposeplayground.data.database
 
-data class AdvertEntity(
+data class AdvertData(
         val id: Long,
         val title: String,
         val text: String

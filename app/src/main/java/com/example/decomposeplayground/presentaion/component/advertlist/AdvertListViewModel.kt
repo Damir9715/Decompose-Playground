@@ -3,18 +3,17 @@ package com.example.decomposeplayground.presentaion.component.advertlist
 import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.essenty.instancekeeper.InstanceKeeper
-import com.example.decomposeplayground.data.database.AdvertsDatabase
+import com.example.decomposeplayground.domain.model.Advert
+import com.example.decomposeplayground.domain.usecase.GetAdvertListUseCase
 
 class AdvertListViewModel(
-        database: AdvertsDatabase,
         sqb: Int,
+        getAdvertListUseCase: GetAdvertListUseCase,
 ) : InstanceKeeper.Instance {
 
     private val _state: MutableValue<State> = MutableValue(
             State(
-                    adverts = database.getAll().map {
-                        Advert(it.id, it.title)
-                    },
+                    adverts = getAdvertListUseCase.execute(),
                     selectedAdvertId = null,
                     sqb = sqb,
             )
@@ -25,10 +24,5 @@ class AdvertListViewModel(
             val adverts: List<Advert>,
             val selectedAdvertId: Long?,
             val sqb: Int?,
-    )
-
-    data class Advert(
-            val id: Long,
-            val title: String,
     )
 }

@@ -8,14 +8,14 @@ import com.arkivanov.decompose.router.stack.navigate
 import com.arkivanov.decompose.router.stack.push
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.essenty.parcelable.Parcelable
-import com.example.decomposeplayground.data.database.AdvertsDatabase
+import com.example.decomposeplayground.domain.usecase.GetAdvertListUseCase
 import com.example.decomposeplayground.presentaion.component.advertlist.AdvertListComponentImpl
 import com.example.decomposeplayground.presentaion.component.filter.FilterComponentImpl
 import kotlinx.parcelize.Parcelize
 
 class ListingHolderComponentImpl(
         componentContext: ComponentContext,
-        private val database: AdvertsDatabase,
+        private val getAdvertListUseCase: GetAdvertListUseCase,
         private val setBottomNavigationVisibility: (Boolean) -> Unit,
         private val onAdvertClicked: (Long) -> Unit,
 ) : ListingHolderComponent, ComponentContext by componentContext {
@@ -34,7 +34,7 @@ class ListingHolderComponentImpl(
                 is Config.AdvertList -> ListingHolderComponent.Child.AdvertListChild(
                         component = AdvertListComponentImpl(
                                 componentContext = componentContext,
-                                database = database,
+                                getAdvertListUseCase = getAdvertListUseCase,
                                 sqb = config.sqb,
                                 onAdvertClicked = ::onAdvertClicked,
                                 onFilterClicked = ::onFilterClicked,

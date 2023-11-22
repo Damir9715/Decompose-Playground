@@ -10,7 +10,7 @@ import com.arkivanov.decompose.value.Value
 import com.arkivanov.decompose.value.update
 import com.arkivanov.essenty.lifecycle.Lifecycle
 import com.arkivanov.essenty.parcelable.Parcelable
-import com.example.decomposeplayground.data.database.AdvertsDatabase
+import com.example.decomposeplayground.domain.usecase.GetAdvertListUseCase
 import com.example.decomposeplayground.presentaion.component.cabinetholder.CabinetHolderComponentImpl
 import com.example.decomposeplayground.presentaion.component.favorites.FavoritesComponentImpl
 import com.example.decomposeplayground.presentaion.component.listingholder.ListingHolderComponentImpl
@@ -19,7 +19,7 @@ import kotlinx.parcelize.Parcelize
 
 class BottomNavigationComponentImpl(
         componentContext: ComponentContext,
-        private val database: AdvertsDatabase,
+        private val getAdvertListUseCase: GetAdvertListUseCase,
         private val onPostAdvertTabClicked: () -> Unit,
         private val onAdvertClicked: (Long) -> Unit,
         private val setBackCallback: (Boolean) -> Unit,
@@ -42,7 +42,7 @@ class BottomNavigationComponentImpl(
                 is Config.AdvertList -> BottomNavigationComponent.Child.AdvertListChild(
                         component = ListingHolderComponentImpl(
                                 componentContext = componentContext,
-                                database = database,
+                                getAdvertListUseCase = getAdvertListUseCase,
                                 setBottomNavigationVisibility = ::setBottomNavigationVisibility,
                                 onAdvertClicked = onAdvertClicked,
                         )

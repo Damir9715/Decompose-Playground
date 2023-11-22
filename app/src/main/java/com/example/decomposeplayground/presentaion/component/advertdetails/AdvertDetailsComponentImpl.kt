@@ -9,7 +9,7 @@ import com.arkivanov.decompose.router.slot.dismiss
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.essenty.instancekeeper.getOrCreate
 import com.arkivanov.essenty.parcelable.Parcelable
-import com.example.decomposeplayground.data.database.AdvertsDatabase
+import com.example.decomposeplayground.domain.usecase.GetAdvertDetailsUseCase
 import com.example.decomposeplayground.presentaion.component.ordercall.OrderCallDialogComponent
 import com.example.decomposeplayground.presentaion.component.ordercall.OrderCallDialogComponentImpl
 import kotlinx.parcelize.Parcelize
@@ -17,11 +17,11 @@ import kotlinx.parcelize.Parcelize
 class AdvertDetailsComponentImpl(
         componentContext: ComponentContext,
         advertId: Long,
-        database: AdvertsDatabase,
+        getAdvertDetailsUseCase: GetAdvertDetailsUseCase,
         private val onFinished: () -> Unit,
 ) : AdvertDetailsComponent, ComponentContext by componentContext {
 
-    override val viewModel = instanceKeeper.getOrCreate { AdvertDetailsViewModel(advertId, database) }
+    override val viewModel = instanceKeeper.getOrCreate { AdvertDetailsViewModel(advertId, getAdvertDetailsUseCase) }
 
     //dialog navigation
     private val dialogNavigation = SlotNavigation<DialogConfig>()

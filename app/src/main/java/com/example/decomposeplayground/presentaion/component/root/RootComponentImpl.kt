@@ -11,7 +11,8 @@ import com.arkivanov.decompose.value.Value
 import com.arkivanov.decompose.value.update
 import com.arkivanov.essenty.backhandler.BackCallback
 import com.arkivanov.essenty.parcelable.Parcelable
-import com.example.decomposeplayground.data.database.DefaultAdvertsDatabase
+import com.example.decomposeplayground.domain.usecase.GetAdvertDetailsUseCase
+import com.example.decomposeplayground.domain.usecase.GetAdvertListUseCase
 import com.example.decomposeplayground.presentaion.MainActivity
 import com.example.decomposeplayground.presentaion.component.advertdetails.AdvertDetailsComponentImpl
 import com.example.decomposeplayground.presentaion.component.bottomnavigation.BottomNavigationComponentImpl
@@ -23,11 +24,11 @@ private const val EXIT_APPLICATION_TIMEOUT = 2000
 class RootComponentImpl(
         componentContext: ComponentContext,
         private val activity: MainActivity,
+        private val getAdvertListUseCase: GetAdvertListUseCase,
+        private val getAdvertDetailsUseCase: GetAdvertDetailsUseCase,
 ) : RootComponent, ComponentContext by componentContext {
 
     private var backPressedTime = 0L
-
-    private val database = DefaultAdvertsDatabase()
 
     private val _state = MutableValue(RootComponent.State(null))
     override val state: Value<RootComponent.State> = _state
@@ -47,7 +48,7 @@ class RootComponentImpl(
                 is Config.BottomNavigation -> RootComponent.Child.BottomNavigationChild(
                         component = BottomNavigationComponentImpl(
                                 componentContext = componentContext,
-                                database = database,
+                                getAdvertListUseCase = getAdvertListUseCase,
                                 onPostAdvertTabClicked = ::onPostAdvertTabClicked,
                                 setBackCallback = ::setBackCallback,
                                 onAdvertClicked = ::onAdvertClicked,
@@ -61,7 +62,7 @@ class RootComponentImpl(
                 is Config.AdvertDetails -> RootComponent.Child.AdvertDetailsChild(
                         component = AdvertDetailsComponentImpl(
                                 componentContext = componentContext,
-                                database = database,
+                                getAdvertDetailsUseCase = getAdvertDetailsUseCase,
                                 advertId = config.id,
                                 onFinished = ::onAdvertDetailsCloseClicked,
                         )

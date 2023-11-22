@@ -8,14 +8,29 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.ui.Modifier
 import com.arkivanov.decompose.defaultComponentContext
+import com.example.decomposeplayground.data.database.DefaultAdvertsDatabase
+import com.example.decomposeplayground.domain.usecase.GetAdvertDetailsUseCase
+import com.example.decomposeplayground.domain.usecase.GetAdvertListUseCase
 import com.example.decomposeplayground.presentaion.component.root.RootComponentImpl
 import com.example.decomposeplayground.presentaion.component.root.RootContent
 
 class MainActivity : ComponentActivity() {
+
+    private val database = DefaultAdvertsDatabase()
+    private val getAdvertListUseCase: GetAdvertListUseCase
+        get() = GetAdvertListUseCase(database)
+    private val getAdvertDetailsUseCase: GetAdvertDetailsUseCase
+        get() = GetAdvertDetailsUseCase(database)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val root = RootComponentImpl(componentContext = defaultComponentContext(), activity = this)
+        val root = RootComponentImpl(
+                componentContext = defaultComponentContext(),
+                activity = this,
+                getAdvertListUseCase = getAdvertListUseCase,
+                getAdvertDetailsUseCase = getAdvertDetailsUseCase,
+        )
 
         setContent {
             MaterialTheme {

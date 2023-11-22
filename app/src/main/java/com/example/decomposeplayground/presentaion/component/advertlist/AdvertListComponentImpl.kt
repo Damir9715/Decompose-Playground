@@ -3,18 +3,18 @@ package com.example.decomposeplayground.presentaion.component.advertlist
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.essenty.instancekeeper.getOrCreate
 import com.arkivanov.essenty.lifecycle.Lifecycle
-import com.example.decomposeplayground.data.database.AdvertsDatabase
+import com.example.decomposeplayground.domain.usecase.GetAdvertListUseCase
 
 class AdvertListComponentImpl(
         componentContext: ComponentContext,
-        database: AdvertsDatabase,
+        getAdvertListUseCase: GetAdvertListUseCase,
         private val sqb: Int,
         private val onAdvertClicked: (Long) -> Unit,
         private val onFilterClicked: (Int) -> Unit,
         private val setBottomNavigationVisibility: (Boolean) -> Unit,
 ) : AdvertListComponent, ComponentContext by componentContext {
 
-    override val viewModel = instanceKeeper.getOrCreate { AdvertListViewModel(database, sqb) }
+    override val viewModel = instanceKeeper.getOrCreate { AdvertListViewModel(sqb, getAdvertListUseCase) }
 
     init {
         lifecycle.subscribe(object : Lifecycle.Callbacks {
