@@ -27,7 +27,7 @@ fun RootContent(
             modifier = modifier,
     ) {
         when (val child = it.instance) {
-            is RootComponent.Child.MainTabsChild -> BottomNavigationContent(
+            is RootComponent.Child.BottomNavigationChild -> BottomNavigationContent(
                     component = child.component,
                     modifier = Modifier.fillMaxSize()
             )

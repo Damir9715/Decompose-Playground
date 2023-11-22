@@ -43,7 +43,7 @@ interface RootComponent {
 
     sealed interface Child {
 
-        data class MainTabsChild(val component: BottomNavigationComponent) : Child
+        data class BottomNavigationChild(val component: BottomNavigationComponent) : Child
         data class PostAdvertChild(val component: PostAdvertComponent) : Child
         data class AdvertDetails(val component: AdvertDetailsComponent) : Child
     }
@@ -66,14 +66,14 @@ class RootComponentImpl(
     override val childStack: Value<ChildStack<*, RootComponent.Child>> =
             childStack(
                     source = navigation,
-                    initialConfiguration = Config.MainTabs,
+                    initialConfiguration = Config.BottomNavigation,
                     handleBackButton = true,
                     childFactory = ::child,
             )
 
     private fun child(config: Config, componentContext: ComponentContext): RootComponent.Child =
             when (config) {
-                is Config.MainTabs -> RootComponent.Child.MainTabsChild(
+                is Config.BottomNavigation -> RootComponent.Child.BottomNavigationChild(
                         component = BottomNavigationComponentImpl(
                                 componentContext = componentContext,
                                 database = database,
@@ -136,7 +136,7 @@ class RootComponentImpl(
     private sealed interface Config : Parcelable {
 
         @Parcelize
-        data object MainTabs : Config
+        data object BottomNavigation : Config
 
         @Parcelize
         data object PostAdvert : Config
