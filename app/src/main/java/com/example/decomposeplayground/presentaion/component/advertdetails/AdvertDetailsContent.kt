@@ -29,7 +29,7 @@ fun AdvertDetailsContent(
     val state by component.state.subscribeAsState()
     val dialogSlot by component.dialogSlot.subscribeAsState()
 
-    dialogSlot.child?.instance?.also {
+    dialogSlot.child?.instance?.let {
         OrderCallDialogContent(dialogComponent = it)
     }
 

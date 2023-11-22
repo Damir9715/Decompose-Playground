@@ -9,8 +9,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import com.arkivanov.decompose.extensions.compose.jetpack.stack.Children
 import com.arkivanov.decompose.extensions.compose.jetpack.subscribeAsState
-import com.example.decomposeplayground.presentaion.component.host.HostContent
-
+import com.example.decomposeplayground.presentaion.component.advertdetails.AdvertDetailsContent
+import com.example.decomposeplayground.presentaion.component.bottomnavigation.BottomNavigationContent
+import com.example.decomposeplayground.presentaion.component.postadvert.PostAdvertContent
 
 @Composable
 fun RootContent(
@@ -26,7 +27,15 @@ fun RootContent(
             modifier = modifier,
     ) {
         when (val child = it.instance) {
-            is RootComponent.Child.RootChild -> HostContent(
+            is RootComponent.Child.BottomNavigationChild -> BottomNavigationContent(
+                    component = child.component,
+                    modifier = Modifier.fillMaxSize()
+            )
+            is RootComponent.Child.PostAdvertChild -> PostAdvertContent(
+                    component = child.component,
+                    modifier = Modifier.fillMaxSize()
+            )
+            is RootComponent.Child.AdvertDetailsChild -> AdvertDetailsContent(
                     component = child.component,
                     modifier = Modifier.fillMaxSize()
             )

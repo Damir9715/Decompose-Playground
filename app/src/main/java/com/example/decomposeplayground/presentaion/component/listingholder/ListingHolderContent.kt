@@ -6,7 +6,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import com.arkivanov.decompose.extensions.compose.jetpack.stack.Children
 import com.arkivanov.decompose.extensions.compose.jetpack.subscribeAsState
-import com.example.decomposeplayground.presentaion.component.advertdetails.AdvertDetailsContent
 import com.example.decomposeplayground.presentaion.component.advertlist.AdvertListContent
 import com.example.decomposeplayground.presentaion.component.filter.FilterContent
 
@@ -22,15 +21,11 @@ fun ListingHolderContent(
             modifier = modifier,
     ) {
         when (val child = it.instance) {
-            is ListingHolderComponent.Child.AdvertList -> AdvertListContent(
+            is ListingHolderComponent.Child.AdvertListChild -> AdvertListContent(
                     component = child.component,
                     modifier = Modifier.fillMaxSize()
             )
-            is ListingHolderComponent.Child.AdvertDetails -> AdvertDetailsContent(
-                    component = child.component,
-                    modifier = Modifier.fillMaxSize()
-            )
-            is ListingHolderComponent.Child.Filter -> FilterContent(
+            is ListingHolderComponent.Child.FilterChild -> FilterContent(
                     component = child.component,
                     modifier = Modifier.fillMaxSize()
             )
