@@ -30,7 +30,7 @@ fun AdvertListContent(
         component: AdvertListComponent,
         modifier: Modifier,
 ) {
-    val state: AdvertListComponent.State by component.state.subscribeAsState()
+    val state: AdvertListViewModel.State by component.viewModel.state.subscribeAsState()
 
     Column(modifier = modifier) {
         //Toolbar

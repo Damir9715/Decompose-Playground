@@ -82,6 +82,7 @@ class RootComponentImpl(
 
     init {
         backHandler.register(backCallback)
+        backCallback.isEnabled = false
     }
 
     override fun onPostAdvertTabClicked() {

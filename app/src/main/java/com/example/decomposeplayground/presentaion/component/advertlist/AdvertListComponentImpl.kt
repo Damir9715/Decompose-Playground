@@ -1,8 +1,7 @@
 package com.example.decomposeplayground.presentaion.component.advertlist
 
 import com.arkivanov.decompose.ComponentContext
-import com.arkivanov.decompose.value.MutableValue
-import com.arkivanov.decompose.value.Value
+import com.arkivanov.essenty.instancekeeper.getOrCreate
 import com.arkivanov.essenty.lifecycle.Lifecycle
 import com.example.decomposeplayground.data.database.AdvertsDatabase
 
@@ -15,16 +14,7 @@ class AdvertListComponentImpl(
         private val setBottomNavigationVisibility: (Boolean) -> Unit,
 ) : AdvertListComponent, ComponentContext by componentContext {
 
-    private val _state = MutableValue(
-            AdvertListComponent.State(
-                    adverts = database.getAll().map {
-                        AdvertListComponent.Advert(it.id, it.title)
-                    },
-                    selectedAdvertId = null,
-                    sqb = sqb,
-            )
-    )
-    override val state: Value<AdvertListComponent.State> = _state
+    override val viewModel = instanceKeeper.getOrCreate { AdvertListViewModel(database, sqb) }
 
     init {
         lifecycle.subscribe(object : Lifecycle.Callbacks {

@@ -26,7 +26,7 @@ fun AdvertDetailsContent(
         component: AdvertDetailsComponent,
         modifier: Modifier,
 ) {
-    val state by component.state.subscribeAsState()
+    val state by component.viewModel.state.subscribeAsState()
     val dialogSlot by component.dialogSlot.subscribeAsState()
 
     dialogSlot.child?.instance?.let {
