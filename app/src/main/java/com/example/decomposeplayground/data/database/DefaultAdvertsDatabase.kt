@@ -18,7 +18,7 @@ class DefaultAdvertsDatabase : AdvertsDatabase {
                 )
             }
 
-    override fun getAll(): List<AdvertEntity> = adverts
+    override fun getAll(): List<AdvertData> = adverts
 
-    override fun getById(id: Long): AdvertEntity = adverts.first { it.id == id }
+    override fun getById(id: Long): AdvertData = adverts.first { it.id == id }
 }
