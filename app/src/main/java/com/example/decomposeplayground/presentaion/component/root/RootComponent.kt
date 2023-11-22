@@ -21,7 +21,6 @@ interface RootComponent {
     data class State(val toast: String? = null)
 
     sealed interface Child {
-
         data class BottomNavigationChild(val component: BottomNavigationComponent) : Child
         data class PostAdvertChild(val component: PostAdvertComponent) : Child
         data class AdvertDetailsChild(val component: AdvertDetailsComponent) : Child
