@@ -6,12 +6,10 @@ import com.arkivanov.decompose.value.update
 import com.arkivanov.essenty.instancekeeper.InstanceKeeper
 
 class FilterViewModel(
-        sqb: Int,
+        state: FilterComponent.State,
 ) : InstanceKeeper.Instance {
 
-    private val _state: MutableValue<FilterComponent.State> = MutableValue(
-            FilterComponent.State(sqb)
-    )
+    private val _state: MutableValue<FilterComponent.State> = MutableValue(state)
     val state: Value<FilterComponent.State> = _state
 
     fun onIncrementSqbClicked() {

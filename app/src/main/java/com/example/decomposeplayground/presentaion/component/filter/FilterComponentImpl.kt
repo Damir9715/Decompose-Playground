@@ -3,6 +3,9 @@ package com.example.decomposeplayground.presentaion.component.filter
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.essenty.instancekeeper.getOrCreate
 import com.arkivanov.essenty.lifecycle.Lifecycle
+import com.arkivanov.essenty.statekeeper.consume
+
+private const val STATE_KEY = "state_key"
 
 class FilterComponentImpl(
         componentContext: ComponentContext,
@@ -11,7 +14,9 @@ class FilterComponentImpl(
         private val onFilterApplied: (Int) -> Unit,
 ) : FilterComponent, ComponentContext by componentContext {
 
-    override val viewModel: FilterViewModel = instanceKeeper.getOrCreate { FilterViewModel(sqb) }
+    override val viewModel: FilterViewModel = instanceKeeper.getOrCreate {
+        FilterViewModel(stateKeeper.consume(STATE_KEY) ?: FilterComponent.State(sqb))
+    }
 
     init {
         lifecycle.subscribe(object : Lifecycle.Callbacks {
@@ -20,6 +25,9 @@ class FilterComponentImpl(
                 setBottomNavigationVisibility.invoke(false)
             }
         })
+        stateKeeper.register(STATE_KEY) {
+            viewModel.state.value
+        }
     }
 
     override fun onFilterApplied() {
