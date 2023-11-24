@@ -1,4 +1,4 @@
-package com.example.decomposeplayground.presentaion.component.listingholder
+package com.example.decomposeplayground.presentaion.component.listingstack
 
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.ChildStack
@@ -14,15 +14,15 @@ import com.example.decomposeplayground.presentaion.component.filter.FilterCompon
 import kotlinx.parcelize.Parcelize
 import kotlin.random.Random
 
-class ListingHolderComponentImpl(
+class ListingStackComponentImpl(
         componentContext: ComponentContext,
         private val getAdvertListUseCase: GetAdvertListUseCase,
         private val setBottomNavigationVisibility: (Boolean) -> Unit,
         private val onAdvertClicked: (Long) -> Unit,
-) : ListingHolderComponent, ComponentContext by componentContext {
+) : ListingStackComponent, ComponentContext by componentContext {
 
     private val navigation = StackNavigation<Config>()
-    override val childStack: Value<ChildStack<*, ListingHolderComponent.Child>> =
+    override val childStack: Value<ChildStack<*, ListingStackComponent.Child>> =
             childStack(
                     source = navigation,
                     initialConfiguration = Config.AdvertList(),
@@ -30,9 +30,9 @@ class ListingHolderComponentImpl(
                     childFactory = ::child,
             )
 
-    private fun child(config: Config, componentContext: ComponentContext): ListingHolderComponent.Child =
+    private fun child(config: Config, componentContext: ComponentContext): ListingStackComponent.Child =
             when (config) {
-                is Config.AdvertList -> ListingHolderComponent.Child.AdvertListChild(
+                is Config.AdvertList -> ListingStackComponent.Child.AdvertListChild(
                         component = AdvertListComponentImpl(
                                 componentContext = componentContext,
                                 getAdvertListUseCase = getAdvertListUseCase,
@@ -42,7 +42,7 @@ class ListingHolderComponentImpl(
                                 setBottomNavigationVisibility = setBottomNavigationVisibility,
                         )
                 )
-                is Config.Filter -> ListingHolderComponent.Child.FilterChild(
+                is Config.Filter -> ListingStackComponent.Child.FilterChild(
                         component = FilterComponentImpl(
                                 componentContext = componentContext,
                                 setBottomNavigationVisibility = setBottomNavigationVisibility,

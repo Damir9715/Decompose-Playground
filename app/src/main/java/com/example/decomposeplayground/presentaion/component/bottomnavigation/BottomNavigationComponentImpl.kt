@@ -11,9 +11,9 @@ import com.arkivanov.decompose.value.update
 import com.arkivanov.essenty.lifecycle.Lifecycle
 import com.arkivanov.essenty.parcelable.Parcelable
 import com.example.decomposeplayground.domain.usecase.GetAdvertListUseCase
-import com.example.decomposeplayground.presentaion.component.cabinetholder.CabinetHolderComponentImpl
+import com.example.decomposeplayground.presentaion.component.cabinetstack.CabinetStackComponentImpl
 import com.example.decomposeplayground.presentaion.component.favorites.FavoritesComponentImpl
-import com.example.decomposeplayground.presentaion.component.listingholder.ListingHolderComponentImpl
+import com.example.decomposeplayground.presentaion.component.listingstack.ListingStackComponentImpl
 import com.example.decomposeplayground.presentaion.component.messages.MessagesComponentImpl
 import kotlinx.parcelize.Parcelize
 
@@ -40,7 +40,7 @@ class BottomNavigationComponentImpl(
     private fun child(config: Config, componentContext: ComponentContext): BottomNavigationComponent.Child =
             when (config) {
                 is Config.AdvertList -> BottomNavigationComponent.Child.AdvertListChild(
-                        component = ListingHolderComponentImpl(
+                        component = ListingStackComponentImpl(
                                 componentContext = componentContext,
                                 getAdvertListUseCase = getAdvertListUseCase,
                                 setBottomNavigationVisibility = ::setBottomNavigationVisibility,
@@ -53,7 +53,7 @@ class BottomNavigationComponentImpl(
                         )
                 )
                 is Config.Cabinet -> BottomNavigationComponent.Child.CabinetChild(
-                        component = CabinetHolderComponentImpl(
+                        component = CabinetStackComponentImpl(
                                 componentContext = componentContext,
                         )
                 )

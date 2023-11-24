@@ -17,9 +17,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import com.arkivanov.decompose.extensions.compose.jetpack.stack.Children
 import com.arkivanov.decompose.extensions.compose.jetpack.subscribeAsState
-import com.example.decomposeplayground.presentaion.component.cabinetholder.CabinetHolderContent
+import com.example.decomposeplayground.presentaion.component.cabinetstack.CabinetStackContent
 import com.example.decomposeplayground.presentaion.component.favorites.FavoritesContent
-import com.example.decomposeplayground.presentaion.component.listingholder.ListingHolderContent
+import com.example.decomposeplayground.presentaion.component.listingstack.ListingStackContent
 import com.example.decomposeplayground.presentaion.component.messages.MessagesContent
 
 @Composable
@@ -37,7 +37,7 @@ fun BottomNavigationContent(
                 modifier = Modifier.weight(weight = 1F),
         ) {
             when (val child = it.instance) {
-                is BottomNavigationComponent.Child.AdvertListChild -> ListingHolderContent(
+                is BottomNavigationComponent.Child.AdvertListChild -> ListingStackContent(
                         component = child.component,
                         modifier = Modifier.fillMaxSize()
                 )
@@ -49,7 +49,7 @@ fun BottomNavigationContent(
                         component = child.component,
                         modifier = Modifier.fillMaxSize()
                 )
-                is BottomNavigationComponent.Child.CabinetChild -> CabinetHolderContent(
+                is BottomNavigationComponent.Child.CabinetChild -> CabinetStackContent(
                         component = child.component,
                         modifier = Modifier.fillMaxSize()
                 )

@@ -1,4 +1,4 @@
-package com.example.decomposeplayground.presentaion.component.listingholder
+package com.example.decomposeplayground.presentaion.component.listingstack
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
@@ -10,8 +10,8 @@ import com.example.decomposeplayground.presentaion.component.advertlist.AdvertLi
 import com.example.decomposeplayground.presentaion.component.filter.FilterContent
 
 @Composable
-fun ListingHolderContent(
-        component: ListingHolderComponent,
+fun ListingStackContent(
+        component: ListingStackComponent,
         modifier: Modifier,
 ) {
     val childStack by component.childStack.subscribeAsState()
@@ -21,11 +21,11 @@ fun ListingHolderContent(
             modifier = modifier,
     ) {
         when (val child = it.instance) {
-            is ListingHolderComponent.Child.AdvertListChild -> AdvertListContent(
+            is ListingStackComponent.Child.AdvertListChild -> AdvertListContent(
                     component = child.component,
                     modifier = Modifier.fillMaxSize()
             )
-            is ListingHolderComponent.Child.FilterChild -> FilterContent(
+            is ListingStackComponent.Child.FilterChild -> FilterContent(
                     component = child.component,
                     modifier = Modifier.fillMaxSize()
             )

@@ -1,11 +1,11 @@
-package com.example.decomposeplayground.presentaion.component.listingholder
+package com.example.decomposeplayground.presentaion.component.listingstack
 
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.value.Value
 import com.example.decomposeplayground.presentaion.component.advertlist.AdvertListComponent
 import com.example.decomposeplayground.presentaion.component.filter.FilterComponent
 
-interface ListingHolderComponent {
+interface ListingStackComponent {
 
     val childStack: Value<ChildStack<*, Child>>
 

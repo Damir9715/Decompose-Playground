@@ -1,4 +1,4 @@
-package com.example.decomposeplayground.presentaion.component.cabinetholder
+package com.example.decomposeplayground.presentaion.component.cabinetstack
 
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.ChildStack
@@ -11,12 +11,12 @@ import com.example.decomposeplayground.presentaion.component.cabinet.CabinetComp
 import com.example.decomposeplayground.presentaion.component.settings.SettingsComponentImpl
 import kotlinx.parcelize.Parcelize
 
-class CabinetHolderComponentImpl(
+class CabinetStackComponentImpl(
         componentContext: ComponentContext,
-) : CabinetHolderComponent, ComponentContext by componentContext {
+) : CabinetStackComponent, ComponentContext by componentContext {
 
     private val navigation = StackNavigation<Config>()
-    override val childStack: Value<ChildStack<*, CabinetHolderComponent.Child>> =
+    override val childStack: Value<ChildStack<*, CabinetStackComponent.Child>> =
             childStack(
                     source = navigation,
                     initialConfiguration = Config.Cabinet,
@@ -24,15 +24,15 @@ class CabinetHolderComponentImpl(
                     childFactory = ::child,
             )
 
-    private fun child(config: Config, componentContext: ComponentContext): CabinetHolderComponent.Child =
+    private fun child(config: Config, componentContext: ComponentContext): CabinetStackComponent.Child =
             when (config) {
-                is Config.Cabinet -> CabinetHolderComponent.Child.CabinetChild(
+                is Config.Cabinet -> CabinetStackComponent.Child.CabinetChild(
                         component = CabinetComponentImpl(
                                 componentContext = componentContext,
                                 onSettingsClicked = ::onSettingsClicked,
                         )
                 )
-                is Config.Settings -> CabinetHolderComponent.Child.SettingsChild(
+                is Config.Settings -> CabinetStackComponent.Child.SettingsChild(
                         component = SettingsComponentImpl(
                                 componentContext = componentContext,
                         )

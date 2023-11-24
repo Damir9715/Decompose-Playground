@@ -1,4 +1,4 @@
-package com.example.decomposeplayground.presentaion.component.cabinetholder
+package com.example.decomposeplayground.presentaion.component.cabinetstack
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
@@ -10,8 +10,8 @@ import com.example.decomposeplayground.presentaion.component.cabinet.CabinetCont
 import com.example.decomposeplayground.presentaion.component.settings.SettingsContent
 
 @Composable
-fun CabinetHolderContent(
-        component: CabinetHolderComponent,
+fun CabinetStackContent(
+        component: CabinetStackComponent,
         modifier: Modifier,
 ) {
     val childStack by component.childStack.subscribeAsState()
@@ -21,11 +21,11 @@ fun CabinetHolderContent(
             modifier = modifier,
     ) {
         when (val child = it.instance) {
-            is CabinetHolderComponent.Child.CabinetChild -> CabinetContent(
+            is CabinetStackComponent.Child.CabinetChild -> CabinetContent(
                     component = child.component,
                     modifier = Modifier.fillMaxSize()
             )
-            is CabinetHolderComponent.Child.SettingsChild -> SettingsContent(
+            is CabinetStackComponent.Child.SettingsChild -> SettingsContent(
                     component = child.component,
                     modifier = Modifier.fillMaxSize()
             )
